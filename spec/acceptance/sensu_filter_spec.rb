@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_filter', if: RSpec.configuration.sensu_full do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo_filter', if: RSpec.configuration.sensugo_full do
+  node = hosts_as('sensugo_backend')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_filter { 'test':
+      include ::sensugo::backend
+      sensugo_filter { 'test':
         action         => 'allow',
         expressions    => ["event.Entity.Environment == 'production'"],
         runtime_assets => ['test'],
@@ -33,8 +33,8 @@ describe 'sensu_filter', if: RSpec.configuration.sensu_full do
   context 'update filter' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_filter { 'test':
+      include ::sensugo::backend
+      sensugo_filter { 'test':
         action     => 'allow',
         expressions => ["event.Entity.Environment == 'test'"],
         runtime_assets => ['test2'],
@@ -60,8 +60,8 @@ describe 'sensu_filter', if: RSpec.configuration.sensu_full do
   context 'ensure => absent' do
     it 'should remove without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_filter { 'test': ensure => 'absent' }
+      include ::sensugo::backend
+      sensugo_filter { 'test': ensure => 'absent' }
       EOS
 
       # Run it twice and test for idempotency

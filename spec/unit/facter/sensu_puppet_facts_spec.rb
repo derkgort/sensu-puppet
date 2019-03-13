@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'facter/sensu_puppet_facts'
+require 'facter/sensugo_puppet_facts'
 
-describe SensuPuppetFacts do
-  subject { SensuPuppetFacts }
+describe SensuGoPuppetFacts do
+  subject { SensuGoPuppetFacts }
   before(:each) do
     Puppet[:logdir] = '/tmp'
     Puppet[:confdir] = '/tmp'

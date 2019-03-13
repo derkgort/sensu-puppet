@@ -1,15 +1,15 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_cluster_role_binding', if: RSpec.configuration.sensu_full do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo_cluster_role_binding', if: RSpec.configuration.sensugo_full do
+  node = hosts_as('sensugo_backend')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_cluster_role { 'test':
+      include ::sensugo::backend
+      sensugo_cluster_role { 'test':
         rules => [{'verbs' => ['get','list'], 'resources' => ['checks']}],
       }
-      sensu_cluster_role_binding { 'test':
+      sensugo_cluster_role_binding { 'test':
         role_ref => 'test',
         subjects => [{'type' => 'User', 'name' => 'admin'}],
       }
@@ -32,11 +32,11 @@ describe 'sensu_cluster_role_binding', if: RSpec.configuration.sensu_full do
   context 'update cluster_role_binding' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_cluster_role { 'test':
+      include ::sensugo::backend
+      sensugo_cluster_role { 'test':
         rules => [{'verbs' => ['get','list'], 'resources' => ['checks']}],
       }
-      sensu_cluster_role_binding { 'test':
+      sensugo_cluster_role_binding { 'test':
         role_ref => 'test',
         subjects => [{'type' => 'User', 'name' => 'admin'},{'type' => 'User', 'name' => 'agent'}],
       }
@@ -59,8 +59,8 @@ describe 'sensu_cluster_role_binding', if: RSpec.configuration.sensu_full do
   context 'ensure => absent' do
     it 'should remove without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_cluster_role_binding { 'test': ensure => 'absent' }
+      include ::sensugo::backend
+      sensugo_cluster_role_binding { 'test': ensure => 'absent' }
       EOS
 
       # Run it twice and test for idempotency

@@ -1,5 +1,5 @@
 module PuppetX
-  module Sensu
+  module SensuGo
     class ArrayProperty < Puppet::Property
 
       def should

@@ -1,15 +1,15 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu::agent class', unless: RSpec.configuration.sensu_cluster do
-  node = hosts_as('sensu_agent')[0]
+describe 'sensugo::agent class', unless: RSpec.configuration.sensugo_cluster do
+  node = hosts_as('sensugo_agent')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
       class { '::sensu': }
-      class { '::sensu::agent':
-        backends    => ['sensu_backend:8081'],
+      class { '::sensugo::agent':
+        backends    => ['sensugo_backend:8081'],
         config_hash => {
-          'name' => 'sensu_agent',
+          'name' => 'sensugo_agent',
         }
       }
       EOS

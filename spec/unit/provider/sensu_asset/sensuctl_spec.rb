@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:sensu_asset).provider(:sensuctl) do
+describe Puppet::Type.type(:sensugo_asset).provider(:sensuctl) do
   before(:each) do
     @provider = described_class
-    @type = Puppet::Type.type(:sensu_asset)
+    @type = Puppet::Type.type(:sensugo_asset)
     @resource = @type.new({
       :name => 'test',
       :url => 'http://127.0.0.1',

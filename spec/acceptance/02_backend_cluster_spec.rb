@@ -1,13 +1,13 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu::backend cluster class', if: RSpec.configuration.sensu_cluster do
-  node1 = hosts_with_name(hosts, 'sensu_backend1')[0]
-  node2 = hosts_with_name(hosts, 'sensu_backend2')[0]
-  node3 = hosts_with_name(hosts, 'sensu_backend3')[0]
+describe 'sensugo::backend cluster class', if: RSpec.configuration.sensugo_cluster do
+  node1 = hosts_with_name(hosts, 'sensugo_backend1')[0]
+  node2 = hosts_with_name(hosts, 'sensugo_backend2')[0]
+  node3 = hosts_with_name(hosts, 'sensugo_backend3')[0]
   context 'new cluster' do
     it 'should work without errors' do
       node1_pp = <<-EOS
-      class { '::sensu::backend':
+      class { '::sensugo::backend':
         config_hash => {
           'etcd-advertise-client-urls'       => 'http://#{fact_on(node1, 'ipaddress')}:2379',
           'etcd-listen-client-urls'          => 'http://#{fact_on(node1, 'ipaddress')}:2379',
@@ -21,7 +21,7 @@ describe 'sensu::backend cluster class', if: RSpec.configuration.sensu_cluster d
       }
       EOS
       node2_pp = <<-EOS
-      class { '::sensu::backend':
+      class { '::sensugo::backend':
         config_hash => {
           'etcd-advertise-client-urls'       => 'http://#{fact_on(node2, 'ipaddress')}:2379',
           'etcd-listen-client-urls'          => 'http://#{fact_on(node2, 'ipaddress')}:2379',
@@ -74,12 +74,12 @@ describe 'sensu::backend cluster class', if: RSpec.configuration.sensu_cluster d
   context 'Add sensu backend cluster member' do
     it 'should add member' do
       pp = <<-EOS
-      sensu_cluster_member { 'backend3':
+      sensugo_cluster_member { 'backend3':
         peer_urls => ['http://#{fact_on(node3, 'ipaddress')}:2380'],
       }
       EOS
       node3_pp = <<-EOS
-      class { '::sensu::backend':
+      class { '::sensugo::backend':
         config_hash => {
           'etcd-advertise-client-urls'       => 'http://#{fact_on(node3, 'ipaddress')}:2379',
           'etcd-listen-client-urls'          => 'http://#{fact_on(node3, 'ipaddress')}:2379',

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'sensu::agent', :type => :class do
+describe 'sensugo::agent', :type => :class do
   on_supported_os({facterversion: '3.8.0'}).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
@@ -8,13 +8,13 @@ describe 'sensu::agent', :type => :class do
         it { should compile.with_all_deps }
 
         it { should contain_class('sensu')}
-        it { should contain_class('sensu::agent')}
+        it { should contain_class('sensugo::agent')}
 
         it {
           should contain_package('sensu-go-agent').with({
             'ensure'  => 'installed',
             'name'    => 'sensu-go-agent',
-            'before'  => 'File[sensu_etc_dir]',
+            'before'  => 'File[sensugo_etc_dir]',
             'require' => platforms[facts[:osfamily]][:package_require],
           })
         }
@@ -27,7 +27,7 @@ describe 'sensu::agent', :type => :class do
         END
 
         it {
-          should contain_file('sensu_agent_config').with({
+          should contain_file('sensugo_agent_config').with({
             'ensure'  => 'file',
             'path'    => '/etc/sensu/agent.yml',
             'content' => agent_content,
@@ -41,7 +41,7 @@ describe 'sensu::agent', :type => :class do
             'ensure'    => 'running',
             'enable'    => true,
             'name'      => 'sensu-agent',
-            'subscribe' => 'Class[Sensu::Ssl]',
+            'subscribe' => 'Class[Sensugo::Ssl]',
           })
         }
       end
@@ -58,7 +58,7 @@ describe 'sensu::agent', :type => :class do
         END
 
         it {
-          should contain_file('sensu_agent_config').with({
+          should contain_file('sensugo_agent_config').with({
             'ensure'    => 'file',
             'path'      => '/etc/sensu/agent.yml',
             'content'   => agent_content,
@@ -73,7 +73,7 @@ describe 'sensu::agent', :type => :class do
 
       context 'with show_diff => false' do
         let(:params) {{ :show_diff => false }}
-        it { should contain_file('sensu_agent_config').with_show_diff('false') }
+        it { should contain_file('sensugo_agent_config').with_show_diff('false') }
       end
 
       context 'with manage_repo => false' do
@@ -114,7 +114,7 @@ describe 'sensu::agent', :type => :class do
           END
 
           it {
-            should contain_file('sensu_agent_config').with({
+            should contain_file('sensugo_agent_config').with({
               'ensure'  => 'file',
               'path'    => '/etc/sensu/agent.yml',
               'content' => agent_content,

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:sensu_event).provider(:sensuctl) do
+describe Puppet::Type.type(:sensugo_event).provider(:sensuctl) do
   before(:each) do
     @provider = described_class
-    @type = Puppet::Type.type(:sensu_event)
+    @type = Puppet::Type.type(:sensugo_event)
     @resource = @type.new({
       :name => 'keepalive for test'
     })

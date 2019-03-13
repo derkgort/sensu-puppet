@@ -3,22 +3,22 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_namespace) do
+Puppet::Type.newtype(:sensugo_namespace) do
   desc <<-DESC
 @summary Manages Sensu namespaces
 @example Add an namespace
-  sensu_namespace { 'test':
+  sensugo_namespace { 'test':
     ensure => 'present',
   }
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires(false)
 
   ensurable
@@ -27,7 +27,7 @@ DESC
     desc "The name of the namespace."
     validate do |value|
       unless value =~ /^[\w\.\-]+$/
-        raise ArgumentError, "sensu_namespace name invalid"
+        raise ArgumentError, "sensugo_namespace name invalid"
       end
     end
   end

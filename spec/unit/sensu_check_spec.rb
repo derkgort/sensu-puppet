@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_check'
+require 'puppet/type/sensugo_check'
 
-describe Puppet::Type.type(:sensu_check) do
+describe Puppet::Type.type(:sensugo_check) do
   let(:default_config) do
     {
       name: 'test',
@@ -312,8 +312,8 @@ describe Puppet::Type.type(:sensu_check) do
     let(:res) { check }
   end
 
-  it 'should autorequire sensu_handler' do
-    handler = Puppet::Type.type(:sensu_handler).new(:name => 'test', :type => 'pipe', :command => 'test')
+  it 'should autorequire sensugo_handler' do
+    handler = Puppet::Type.type(:sensugo_handler).new(:name => 'test', :type => 'pipe', :command => 'test')
     catalog = Puppet::Resource::Catalog.new
     config[:handlers] = ['test']
     catalog.add_resource check
@@ -323,8 +323,8 @@ describe Puppet::Type.type(:sensu_check) do
     expect(rel.target.ref).to eq(check.ref)
   end
 
-  it 'should autorequire sensu_asset' do
-    asset = Puppet::Type.type(:sensu_asset).new(:name => 'test', :url => 'http://example.com/asset/example.tar', :sha512 => '4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b')
+  it 'should autorequire sensugo_asset' do
+    asset = Puppet::Type.type(:sensugo_asset).new(:name => 'test', :url => 'http://example.com/asset/example.tar', :sha512 => '4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b')
     catalog = Puppet::Resource::Catalog.new
     config[:runtime_assets] = ['test']
     catalog.add_resource check
@@ -334,8 +334,8 @@ describe Puppet::Type.type(:sensu_check) do
     expect(rel.target.ref).to eq(check.ref)
   end
 
-  it 'should autorequire sensu_hook' do
-    hook = Puppet::Type.type(:sensu_hook).new(:name => 'test', :command => 'test')
+  it 'should autorequire sensugo_hook' do
+    hook = Puppet::Type.type(:sensugo_hook).new(:name => 'test', :command => 'test')
     catalog = Puppet::Resource::Catalog.new
     config[:check_hooks] = [{1 => ['test']},{'critical' => ['test2']}]
     catalog.add_resource check

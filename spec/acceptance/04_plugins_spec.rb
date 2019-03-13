@@ -1,8 +1,8 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu::plugins class', unless: RSpec.configuration.sensu_cluster do
-  agent = hosts_as('sensu_agent')[0]
-  backend = hosts_as('sensu_backend')[0]
+describe 'sensugo::plugins class', unless: RSpec.configuration.sensugo_cluster do
+  agent = hosts_as('sensugo_agent')[0]
+  backend = hosts_as('sensugo_backend')[0]
   before do
     if fact_on(agent, 'operatingsystem') == 'Debian'
       skip("TODO: package is missing on Debian - See https://github.com/sensu/sensu-plugins-omnibus/issues/3")
@@ -12,13 +12,13 @@ describe 'sensu::plugins class', unless: RSpec.configuration.sensu_cluster do
     it 'should work without errors and be idempotent' do
       pp = <<-EOS
       class { '::sensu': }
-      class { '::sensu::agent':
-        backends    => ['sensu_backend:8081'],
+      class { '::sensugo::agent':
+        backends    => ['sensugo_backend:8081'],
         config_hash => {
-          'name' => 'sensu_agent',
+          'name' => 'sensugo_agent',
         }
       }
-      class { '::sensu::plugins':
+      class { '::sensugo::plugins':
         plugins => ['disk-checks'],
         extensions => ['ruby-hash']
       }
@@ -49,11 +49,11 @@ describe 'sensu::plugins class', unless: RSpec.configuration.sensu_cluster do
     it 'should work without errors and be idempotent' do
       pp = <<-EOS
       class { '::sensu': }
-      class { '::sensu::backend':
+      class { '::sensugo::backend':
         password     => 'P@ssw0rd!',
         old_password => 'supersecret',
       }
-      class { '::sensu::plugins':
+      class { '::sensugo::plugins':
         plugins => ['disk-checks'],
         extensions => ['ruby-hash']
       }

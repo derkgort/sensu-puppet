@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:sensu_hook).provider(:sensuctl) do
+describe Puppet::Type.type(:sensugo_hook).provider(:sensuctl) do
   before(:each) do
     @provider = described_class
-    @type = Puppet::Type.type(:sensu_hook)
+    @type = Puppet::Type.type(:sensugo_hook)
     @resource = @type.new({
       :name => 'test',
       :command => 'test',

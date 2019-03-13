@@ -3,11 +3,11 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_asset) do
+Puppet::Type.newtype(:sensugo_asset) do
   desc <<-DESC
 @summary Manages Sensu assets
 @example Create an asset
-  sensu_asset { 'test':
+  sensugo_asset { 'test':
     ensure  => 'present',
     url     => 'http://example.com/asset/example.tar',
     sha512  => '4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b',
@@ -17,12 +17,12 @@ Puppet::Type.newtype(:sensu_asset) do
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires()
 
   ensurable do
@@ -30,7 +30,7 @@ DESC
     defaultvalues
     validate do |value|
       if value.to_sym == :absent
-        raise ArgumentError, "sensu_asset ensure does not support absent"
+        raise ArgumentError, "sensugo_asset ensure does not support absent"
       end
     end
   end
@@ -39,7 +39,7 @@ DESC
     desc "The name of the asset."
     validate do |value|
       unless value =~ /^[\w\.\-]+$/
-        raise ArgumentError, "sensu_asset name invalid"
+        raise ArgumentError, "sensugo_asset name invalid"
       end
     end
   end
@@ -52,7 +52,7 @@ DESC
     desc "The checksum of the asset"
   end
 
-  newproperty(:filters, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:filters, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "A set of filters used by the agent to determine of the asset should be installed."
     newvalues(/.*/, :absent)
   end
@@ -62,11 +62,11 @@ DESC
     defaultto 'default'
   end
 
-  newproperty(:labels, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:labels, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Custom attributes to include with event data, which can be queried like regular attributes."
   end
 
-  newproperty(:annotations, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:annotations, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Arbitrary, non-identifying metadata to include with event data."
   end
 

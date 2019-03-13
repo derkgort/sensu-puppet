@@ -3,11 +3,11 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_entity) do
+Puppet::Type.newtype(:sensugo_entity) do
   desc <<-DESC
 @summary Manages Sensu entities
 @example Create an entity
-  sensu_entity { 'test':
+  sensugo_entity { 'test':
     ensure       => 'present',
     entity_class => 'proxy',
   }
@@ -15,13 +15,13 @@ Puppet::Type.newtype(:sensu_entity) do
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
-* `sensu_handler` - Puppet will autorequie `sensu_handler` resource defined in `deregistration_handler` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
+* `sensugo_handler` - Puppet will autorequie `sensugo_handler` resource defined in `deregistration_handler` property.
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires()
 
   ensurable
@@ -30,7 +30,7 @@ DESC
     desc "The unique name of the entity"
     validate do |value|
       unless value =~ /^[\w\.\-]+$/
-        raise ArgumentError, "sensu_entity name invalid"
+        raise ArgumentError, "sensugo_entity name invalid"
       end
     end
   end
@@ -39,12 +39,12 @@ DESC
     desc "The entity type"
     validate do |value|
       unless value =~ /^[\w\.\-]+$/
-        raise ArgumentError, "sensu_entity entity_class invalid"
+        raise ArgumentError, "sensugo_entity entity_class invalid"
       end
     end
   end
 
-  newproperty(:subscriptions, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:subscriptions, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "A list of subscription names for the entity"
   end
 
@@ -72,7 +72,7 @@ DESC
     desc "The name of the handler to be called when an entity is deregistered."
   end
 
-  newproperty(:redact, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:redact, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "List of items to redact from log messages."
   end
 
@@ -81,15 +81,15 @@ DESC
     defaultto 'default'
   end
 
-  newproperty(:labels, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:labels, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Custom attributes to include with event data, which can be queried like regular attributes."
   end
 
-  newproperty(:annotations, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:annotations, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Arbitrary, non-identifying metadata to include with event data."
   end
 
-  autorequire(:sensu_handler) do
+  autorequire(:sensugo_handler) do
     [ self[:deregistration_handler] ]
   end
 

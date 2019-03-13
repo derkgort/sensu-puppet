@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe 'sensu::ssl', :type => :class do
+describe 'sensugo::ssl', :type => :class do
   on_supported_os({facterversion: '3.8.0'}).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       context 'with default values for all parameters' do
         it { should compile }
 
-        it { should create_class('sensu::ssl') }
+        it { should create_class('sensugo::ssl') }
         it { should contain_class('sensu') }
 
         it {
-          should contain_file('sensu_ssl_dir').with({
+          should contain_file('sensugo_ssl_dir').with({
             'ensure'  => 'directory',
             'path'    => '/etc/sensu/ssl',
             'purge'   => true,
@@ -24,7 +24,7 @@ describe 'sensu::ssl', :type => :class do
         }
 
         it {
-          should contain_file('sensu_ssl_ca').with({
+          should contain_file('sensugo_ssl_ca').with({
             'ensure'    => 'file',
             'path'      => '/etc/sensu/ssl/ca.crt',
             'owner'     => 'sensu',

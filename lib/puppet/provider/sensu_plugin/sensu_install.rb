@@ -1,10 +1,10 @@
-Puppet::Type.type(:sensu_plugin).provide(:sensu_install) do
-  desc "Provider sensu_check using sensuctl"
+Puppet::Type.type(:sensugo_plugin).provide(:sensugo_install) do
+  desc "Provider sensugo_check using sensuctl"
 
   mk_resource_methods
 
   commands :gem => '/opt/sensu-plugins-ruby/embedded/bin/gem'
-  commands :sensu_install => 'sensu-install'
+  commands :sensugo_install => 'sensu-install'
 
   def self.instances
     plugins = []
@@ -113,7 +113,7 @@ Puppet::Type.type(:sensu_plugin).provide(:sensu_install) do
       args << '--proxy'
       args << resource[:proxy]
     end
-    sensu_install(args)
+    sensugo_install(args)
   end
 
   def create

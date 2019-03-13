@@ -3,7 +3,7 @@
 # Class to manage the Sensu backend.
 #
 # @example
-#   class { 'sensu::backend':
+#   class { 'sensugo::backend':
 #     password => 'secret',
 #   }
 #
@@ -52,7 +52,7 @@
 #   The content of sensu-go enterprise license
 #   Do not define with license_source
 #
-class sensu::backend (
+class sensugo::backend (
   Optional[String] $version = undef,
   String $package_name = 'sensu-go-backend',
   String $cli_package_name = 'sensu-go-cli',
@@ -76,15 +76,15 @@ class sensu::backend (
 ) {
 
   if $license_source and $license_content {
-    fail('sensu::backend: Do not define both license_source and license_content')
+    fail('sensugo::backend: Do not define both license_source and license_content')
   }
 
-  include ::sensu
+  include ::sensugo
 
-  $etc_dir = $::sensu::etc_dir
-  $ssl_dir = $::sensu::ssl_dir
-  $use_ssl = $::sensu::use_ssl
-  $_version = pick($version, $::sensu::version)
+  $etc_dir = $::sensugo::etc_dir
+  $ssl_dir = $::sensugo::ssl_dir
+  $use_ssl = $::sensugo::use_ssl
+  $_version = pick($version, $::sensugo::version)
 
   if $use_ssl {
     $url_protocol = 'https'
@@ -94,8 +94,8 @@ class sensu::backend (
       'key-file'        => "${ssl_dir}/key.pem",
       'trusted-ca-file' => $trusted_ca_file,
     }
-    $service_subscribe = Class['::sensu::ssl']
-    Class['::sensu::ssl'] -> Sensu_configure['puppet']
+    $service_subscribe = Class['::sensugo::ssl']
+    Class['::sensugo::ssl'] -> sensugo_configure['puppet']
   } else {
     $url_protocol = 'http'
     $trusted_ca_file = 'absent'
@@ -112,30 +112,30 @@ class sensu::backend (
 
 
   if $include_default_resources {
-    include ::sensu::backend::resources
+    include ::sensugo::backend::resources
   }
 
   package { 'sensu-go-cli':
     ensure  => $_version,
     name    => $cli_package_name,
-    require => $::sensu::package_require,
+    require => $::sensugo::package_require,
   }
 
-  sensu_api_validator { 'sensu':
-    sensu_api_server => $url_host,
-    sensu_api_port   => $url_port,
+  sensugo_api_validator { 'sensu':
+    sensugo_api_server => $url_host,
+    sensugo_api_port   => $url_port,
     use_ssl          => $use_ssl,
     require          => Service['sensu-backend'],
   }
 
-  sensu_configure { 'puppet':
+  sensugo_configure { 'puppet':
     url                => $url,
     username           => 'admin',
     password           => $password,
     bootstrap_password => 'P@ssw0rd!',
     trusted_ca_file    => $trusted_ca_file,
   }
-  sensu_user { 'admin':
+  sensugo_user { 'admin':
     ensure        => 'present',
     password      => $password,
     old_password  => $old_password,
@@ -146,13 +146,13 @@ class sensu::backend (
   }
 
   if $license_source or $license_content {
-    file { 'sensu_license':
+    file { 'sensugo_license':
       ensure    => 'file',
       path      => "${etc_dir}/license.json",
       source    => $license_source,
       content   => $license_content,
-      owner     => $::sensu::user,
-      group     => $::sensu::group,
+      owner     => $::sensugo::user,
+      group     => $::sensugo::group,
       mode      => '0600',
       show_diff => false,
       notify    => Exec['sensu-add-license'],
@@ -162,27 +162,27 @@ class sensu::backend (
       path        => '/usr/bin:/bin:/usr/sbin:/sbin',
       command     => "sensuctl create --file ${etc_dir}/license.json",
       refreshonly => true,
-      require     => Sensu_configure['puppet'],
+      require     => sensugo_configure['puppet'],
     }
   }
 
   if $use_ssl {
-    file { 'sensu_ssl_cert':
+    file { 'sensugo_ssl_cert':
       ensure    => 'file',
       path      => "${ssl_dir}/cert.pem",
       source    => $ssl_cert_source,
-      owner     => $::sensu::user,
-      group     => $::sensu::group,
+      owner     => $::sensugo::user,
+      group     => $::sensugo::group,
       mode      => '0644',
       show_diff => false,
       notify    => Service['sensu-backend'],
     }
-    file { 'sensu_ssl_key':
+    file { 'sensugo_ssl_key':
       ensure    => 'file',
       path      => "${ssl_dir}/key.pem",
       source    => $ssl_key_source,
-      owner     => $::sensu::user,
-      group     => $::sensu::group,
+      owner     => $::sensugo::user,
+      group     => $::sensugo::group,
       mode      => '0600',
       show_diff => false,
       notify    => Service['sensu-backend'],
@@ -192,21 +192,21 @@ class sensu::backend (
   package { 'sensu-go-backend':
     ensure  => $_version,
     name    => $package_name,
-    before  => File['sensu_etc_dir'],
-    require => $::sensu::package_require,
+    before  => File['sensugo_etc_dir'],
+    require => $::sensugo::package_require,
   }
 
-  file { 'sensu_backend_state_dir':
+  file { 'sensugo_backend_state_dir':
     ensure  => 'directory',
     path    => $state_dir,
-    owner   => $::sensu::user,
-    group   => $::sensu::group,
+    owner   => $::sensugo::user,
+    group   => $::sensugo::group,
     mode    => '0750',
     require => Package['sensu-go-backend'],
     before  => Service['sensu-backend'],
   }
 
-  file { 'sensu_backend_config':
+  file { 'sensugo_backend_config':
     ensure    => 'file',
     path      => "${etc_dir}/backend.yml",
     content   => to_yaml($config),

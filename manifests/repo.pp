@@ -1,7 +1,7 @@
 # @summary Private class to manage sensu repository resources
 # @api private
 #
-class sensu::repo {
+class sensugo::repo {
 
   if $facts['os']['family'] == 'RedHat' {
     if $facts['os']['name'] == 'Amazon' {

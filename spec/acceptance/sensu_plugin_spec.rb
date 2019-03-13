@@ -1,7 +1,7 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_plugin', if: RSpec.configuration.sensu_full do
-  agent = hosts_as('sensu_agent')[0]
+describe 'sensugo_plugin', if: RSpec.configuration.sensugo_full do
+  agent = hosts_as('sensugo_agent')[0]
   before do
     if fact_on(agent, 'operatingsystem') == 'Debian'
       skip("TODO: package is missing on Debian - See https://github.com/sensu/sensu-plugins-omnibus/issues/3")
@@ -10,9 +10,9 @@ describe 'sensu_plugin', if: RSpec.configuration.sensu_full do
   context 'install plugin' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::agent
-      include ::sensu::plugins
-      sensu_plugin { 'cpu-checks':
+      include ::sensugo::agent
+      include ::sensugo::plugins
+      sensugo_plugin { 'cpu-checks':
         ensure  => 'present',
         version => '2.0.0',
       }
@@ -33,9 +33,9 @@ describe 'sensu_plugin', if: RSpec.configuration.sensu_full do
   context 'install plugin latest version' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::agent
-      include ::sensu::plugins
-      sensu_plugin { 'cpu-checks':
+      include ::sensugo::agent
+      include ::sensugo::plugins
+      sensugo_plugin { 'cpu-checks':
         ensure  => 'present',
         version => 'latest',
       }
@@ -57,9 +57,9 @@ describe 'sensu_plugin', if: RSpec.configuration.sensu_full do
   context 'uninstall plugin' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::agent
-      include ::sensu::plugins
-      sensu_plugin { 'cpu-checks':
+      include ::sensugo::agent
+      include ::sensugo::plugins
+      sensugo_plugin { 'cpu-checks':
         ensure  => 'absent',
       }
       EOS

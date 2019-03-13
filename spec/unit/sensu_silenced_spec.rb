@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_silenced'
+require 'puppet/type/sensugo_silenced'
 
-describe Puppet::Type.type(:sensu_silenced) do
+describe Puppet::Type.type(:sensugo_silenced) do
   let(:default_config) do
     {
       name: 'test',

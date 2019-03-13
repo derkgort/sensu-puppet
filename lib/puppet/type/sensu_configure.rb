@@ -3,18 +3,18 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_configure) do
+Puppet::Type.newtype(:sensugo_configure) do
   desc <<-DESC
 @summary Manages `sensuctl configure`. This is a private type not intended to be used directly.
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_api_validator[sensu]`
 * `file` - Puppet will autorequire `file` resources defined in `trusted_ca_file` property.
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires(false, false)
 
   ensurable

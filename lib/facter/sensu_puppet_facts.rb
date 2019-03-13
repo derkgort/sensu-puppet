@@ -1,8 +1,8 @@
 require 'puppet'
 
-module SensuPuppetFacts
+module SensuGoPuppetFacts
   def self.add_facts
-    SensuPuppetFacts.init_settings
+    SensuGoPuppetFacts.init_settings
     Facter.add(:puppet_hostcert) do
       setcode do
         ::Puppet[:hostcert].to_s
@@ -29,5 +29,5 @@ module SensuPuppetFacts
   end
 end
 
-SensuPuppetFacts.add_facts
+SensuGoPuppetFacts.add_facts
 

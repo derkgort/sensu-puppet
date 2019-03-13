@@ -1,7 +1,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'sensuctl'))
 
-Puppet::Type.type(:sensu_namespace).provide(:sensuctl, :parent => Puppet::Provider::Sensuctl) do
-  desc "Provider sensu_namespace using sensuctl"
+Puppet::Type.type(:sensugo_namespace).provide(:sensuctl, :parent => Puppet::Provider::Sensuctl) do
+  desc "Provider sensugo_namespace using sensuctl"
 
   mk_resource_methods
 

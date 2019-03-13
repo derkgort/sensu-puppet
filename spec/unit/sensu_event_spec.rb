@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_event'
+require 'puppet/type/sensugo_event'
 
-describe Puppet::Type.type(:sensu_event) do
+describe Puppet::Type.type(:sensugo_event) do
   let(:default_config) do
     {
       name: 'checkalive for test',

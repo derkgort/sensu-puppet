@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'sensu::backend', :type => :class do
+describe 'sensugo::backend', :type => :class do
   on_supported_os({facterversion: '3.8.0'}).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
@@ -8,11 +8,11 @@ describe 'sensu::backend', :type => :class do
       context 'with default values for all parameters' do
         it { should compile.with_all_deps }
 
-        it { should create_class('sensu::backend') }
+        it { should create_class('sensugo::backend') }
         it { should contain_class('sensu') }
-        it { should_not contain_class('sensu::agent') }
-        it { should contain_class('sensu::ssl').that_comes_before('Sensu_configure[puppet]') }
-        it { should contain_class('sensu::backend::resources') }
+        it { should_not contain_class('sensugo::agent') }
+        it { should contain_class('sensugo::ssl').that_comes_before('sensugo_configure[puppet]') }
+        it { should contain_class('sensugo::backend::resources') }
 
         it {
           should contain_package('sensu-go-cli').with({
@@ -23,16 +23,16 @@ describe 'sensu::backend', :type => :class do
         }
 
         it {
-          should contain_sensu_api_validator('sensu').with({
-            'sensu_api_server' => 'test.example.com',
-            'sensu_api_port'   => 8080,
+          should contain_sensugo_api_validator('sensu').with({
+            'sensugo_api_server' => 'test.example.com',
+            'sensugo_api_port'   => 8080,
             'use_ssl'          => 'true',
             'require'          => 'Service[sensu-backend]',
           })
         }
 
         it {
-          should contain_sensu_configure('puppet').with({
+          should contain_sensugo_configure('puppet').with({
             'url'                 => 'https://test.example.com:8080',
             'username'            => 'admin',
             'password'            => 'P@ssw0rd!',
@@ -42,7 +42,7 @@ describe 'sensu::backend', :type => :class do
         }
 
         it {
-          should contain_sensu_user('admin').with({
+          should contain_sensugo_user('admin').with({
             'ensure'        => 'present',
             'password'      => 'P@ssw0rd!',
             'old_password'  => nil,
@@ -53,11 +53,11 @@ describe 'sensu::backend', :type => :class do
           })
         }
 
-        it { should_not contain_file('sensu_license') }
+        it { should_not contain_file('sensugo_license') }
         it { should_not contain_exec('sensu-add-license') }
 
         it {
-          should contain_file('sensu_ssl_cert').with({
+          should contain_file('sensugo_ssl_cert').with({
             'ensure'    => 'file',
             'path'      => '/etc/sensu/ssl/cert.pem',
             'source'    => '/dne/cert.pem',
@@ -70,7 +70,7 @@ describe 'sensu::backend', :type => :class do
         }
 
         it {
-          should contain_file('sensu_ssl_key').with({
+          should contain_file('sensugo_ssl_key').with({
             'ensure'    => 'file',
             'path'      => '/etc/sensu/ssl/key.pem',
             'source'    => '/dne/key.pem',
@@ -91,7 +91,7 @@ describe 'sensu::backend', :type => :class do
         }
 
         it {
-          should contain_file('sensu_backend_state_dir').with({
+          should contain_file('sensugo_backend_state_dir').with({
             'ensure'  => 'directory',
             'path'    => '/var/lib/sensu/sensu-backend',
             'owner'   => 'sensu',
@@ -112,7 +112,7 @@ describe 'sensu::backend', :type => :class do
         END
 
         it {
-          should contain_file('sensu_backend_config').with({
+          should contain_file('sensugo_backend_config').with({
             'ensure'    => 'file',
             'path'      => '/etc/sensu/backend.yml',
             'content'   => backend_content,
@@ -127,7 +127,7 @@ describe 'sensu::backend', :type => :class do
             'ensure'    => 'running',
             'enable'    => true,
             'name'      => 'sensu-backend',
-            'subscribe' => 'Class[Sensu::Ssl]',
+            'subscribe' => 'Class[Sensugo::Ssl]',
           })
         }
       end
@@ -138,16 +138,16 @@ describe 'sensu::backend', :type => :class do
         end
 
         it {
-          should contain_sensu_api_validator('sensu').with({
-            'sensu_api_server' => 'test.example.com',
-            'sensu_api_port'   => 8080,
+          should contain_sensugo_api_validator('sensu').with({
+            'sensugo_api_server' => 'test.example.com',
+            'sensugo_api_port'   => 8080,
             'use_ssl'          => 'false',
             'require'          => 'Service[sensu-backend]',
           })
         }
 
         it {
-          should contain_sensu_configure('puppet').with({
+          should contain_sensugo_configure('puppet').with({
             'url'                 => 'http://test.example.com:8080',
             'username'            => 'admin',
             'password'            => 'P@ssw0rd!',
@@ -156,8 +156,8 @@ describe 'sensu::backend', :type => :class do
           })
         }
 
-        it { should_not contain_file('sensu_ssl_cert') }
-        it { should_not contain_file('sensu_ssl_key') }
+        it { should_not contain_file('sensugo_ssl_cert') }
+        it { should_not contain_file('sensugo_ssl_key') }
 
         backend_content = <<-END.gsub(/^\s+\|/, '')
           |---
@@ -166,7 +166,7 @@ describe 'sensu::backend', :type => :class do
         END
 
         it {
-          should contain_file('sensu_backend_config').with({
+          should contain_file('sensugo_backend_config').with({
             'ensure'  => 'file',
             'path'    => '/etc/sensu/backend.yml',
             'content' => backend_content,
@@ -180,7 +180,7 @@ describe 'sensu::backend', :type => :class do
 
       context 'with show_diff => false' do
         let(:params) {{ :show_diff => false }}
-        it { should contain_file('sensu_backend_config').with_show_diff('false') }
+        it { should contain_file('sensugo_backend_config').with_show_diff('false') }
       end
 
       context 'with manage_repo => false' do
@@ -194,7 +194,7 @@ describe 'sensu::backend', :type => :class do
       context 'with license_source defined' do
         let(:params) {{ :license_source => 'puppet:///modules/site_sensu/license.json' }}
         it {
-          should contain_file('sensu_license').with({
+          should contain_file('sensugo_license').with({
             'ensure'    => 'file',
             'path'      => '/etc/sensu/license.json',
             'source'    => 'puppet:///modules/site_sensu/license.json',
@@ -211,7 +211,7 @@ describe 'sensu::backend', :type => :class do
             'path'        => '/usr/bin:/bin:/usr/sbin:/sbin',
             'command'     => 'sensuctl create --file /etc/sensu/license.json',
             'refreshonly' => 'true',
-            'require'     => 'Sensu_configure[puppet]',
+            'require'     => 'sensugo_configure[puppet]',
           })
         }
       end
@@ -219,7 +219,7 @@ describe 'sensu::backend', :type => :class do
       context 'with license_content defined' do
         let(:params) {{ :license_content => '{ }' }}
         it {
-          should contain_file('sensu_license').with({
+          should contain_file('sensugo_license').with({
             'ensure'    => 'file',
             'path'      => '/etc/sensu/license.json',
             'source'    => nil,
@@ -236,7 +236,7 @@ describe 'sensu::backend', :type => :class do
             'path'        => '/usr/bin:/bin:/usr/sbin:/sbin',
             'command'     => 'sensuctl create --file /etc/sensu/license.json',
             'refreshonly' => 'true',
-            'require'     => 'Sensu_configure[puppet]',
+            'require'     => 'sensugo_configure[puppet]',
           })
         }
       end

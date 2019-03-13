@@ -1,19 +1,19 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_check', if: RSpec.configuration.sensu_full do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo_check', if: RSpec.configuration.sensugo_full do
+  node = hosts_as('sensugo_backend')[0]
   before do
-    if ! RSpec.configuration.sensu_test_enterprise
+    if ! RSpec.configuration.sensugo_test_enterprise
       skip("Skipping enterprise tests")
     end
   end
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      class { '::sensu::backend':
-        license_source => '/root/sensu_license.json',
+      class { '::sensugo::backend':
+        license_source => '/root/sensugo_license.json',
       }
-      sensu_ldap_auth { 'openldap':
+      sensugo_ldap_auth { 'openldap':
         ensure              => 'present',
         servers             => [
           {
@@ -63,10 +63,10 @@ describe 'sensu_check', if: RSpec.configuration.sensu_full do
   context 'updates auth' do
     it 'should work without errors' do
       pp = <<-EOS
-      class { '::sensu::backend':
-        license_source => '/root/sensu_license.json',
+      class { '::sensugo::backend':
+        license_source => '/root/sensugo_license.json',
       }
-      sensu_ldap_auth { 'openldap':
+      sensugo_ldap_auth { 'openldap':
         ensure              => 'present',
         servers             => [
           {
@@ -116,8 +116,8 @@ describe 'sensu_check', if: RSpec.configuration.sensu_full do
   context 'ensure => absent' do
     it 'should remove without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_ldap_auth { 'openldap': ensure => 'absent' }
+      include ::sensugo::backend
+      sensugo_ldap_auth { 'openldap': ensure => 'absent' }
       EOS
 
       # Run it twice and test for idempotency

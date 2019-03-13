@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:sensu_plugin).provider(:sensu_install) do
+describe Puppet::Type.type(:sensugo_plugin).provider(:sensugo_install) do
   before(:each) do
     @provider = described_class
-    @type = Puppet::Type.type(:sensu_plugin)
+    @type = Puppet::Type.type(:sensugo_plugin)
     @resource = @type.new({
       :name => 'test',
       :ensure => 'present',
@@ -54,7 +54,7 @@ sensu-plugins-nvidia (1.0.0, 0.0.2, 0.0.1)
         '--plugin', 'test',
         '--clean', 
       ]
-      expect(@resource.provider).to receive(:sensu_install).with(expected_args)
+      expect(@resource.provider).to receive(:sensugo_install).with(expected_args)
       @resource.provider.create
       property_hash = @resource.provider.instance_variable_get("@property_hash")
       expect(property_hash[:ensure]).to eq(:present)
@@ -65,7 +65,7 @@ sensu-plugins-nvidia (1.0.0, 0.0.2, 0.0.1)
         '--extension', 'test',
         '--clean', 
       ]
-      expect(@resource.provider).to receive(:sensu_install).with(expected_args)
+      expect(@resource.provider).to receive(:sensugo_install).with(expected_args)
       @resource.provider.create
       property_hash = @resource.provider.instance_variable_get("@property_hash")
       expect(property_hash[:ensure]).to eq(:present)
@@ -76,7 +76,7 @@ sensu-plugins-nvidia (1.0.0, 0.0.2, 0.0.1)
         '--plugin', 'sensu-plugins-test:1.0.0',
         '--clean', 
       ]
-      expect(@resource.provider).to receive(:sensu_install).with(expected_args)
+      expect(@resource.provider).to receive(:sensugo_install).with(expected_args)
       @resource.provider.create
       property_hash = @resource.provider.instance_variable_get("@property_hash")
       expect(property_hash[:ensure]).to eq(:present)
@@ -89,7 +89,7 @@ sensu-plugins-nvidia (1.0.0, 0.0.2, 0.0.1)
         '--plugin', 'sensu-plugins-nvidia:1.0.0',
         '--clean', 
       ]
-      expect(@resource.provider).to receive(:sensu_install).with(expected_args)
+      expect(@resource.provider).to receive(:sensugo_install).with(expected_args)
       @resource.provider.create
       property_hash = @resource.provider.instance_variable_get("@property_hash")
       expect(property_hash[:ensure]).to eq(:present)
@@ -99,7 +99,7 @@ sensu-plugins-nvidia (1.0.0, 0.0.2, 0.0.1)
       expected_args = [
         '--plugin', 'test',
       ]
-      expect(@resource.provider).to receive(:sensu_install).with(expected_args)
+      expect(@resource.provider).to receive(:sensugo_install).with(expected_args)
       @resource.provider.create
       property_hash = @resource.provider.instance_variable_get("@property_hash")
       expect(property_hash[:ensure]).to eq(:present)
@@ -111,7 +111,7 @@ sensu-plugins-nvidia (1.0.0, 0.0.2, 0.0.1)
         '--clean',
         '--source', 'http://foo',
       ]
-      expect(@resource.provider).to receive(:sensu_install).with(expected_args)
+      expect(@resource.provider).to receive(:sensugo_install).with(expected_args)
       @resource.provider.create
       property_hash = @resource.provider.instance_variable_get("@property_hash")
       expect(property_hash[:ensure]).to eq(:present)
@@ -123,7 +123,7 @@ sensu-plugins-nvidia (1.0.0, 0.0.2, 0.0.1)
         '--clean',
         '--proxy', 'http://foo',
       ]
-      expect(@resource.provider).to receive(:sensu_install).with(expected_args)
+      expect(@resource.provider).to receive(:sensugo_install).with(expected_args)
       @resource.provider.create
       property_hash = @resource.provider.instance_variable_get("@property_hash")
       expect(property_hash[:ensure]).to eq(:present)
@@ -136,7 +136,7 @@ sensu-plugins-nvidia (1.0.0, 0.0.2, 0.0.1)
         '--plugin', 'sensu-plugins-test:1.0.0',
         '--clean', 
       ]
-      expect(@resource.provider).to receive(:sensu_install).with(expected_args)
+      expect(@resource.provider).to receive(:sensugo_install).with(expected_args)
       @resource.provider.version = '1.0.0'
       @resource.provider.flush
     end

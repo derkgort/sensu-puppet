@@ -1,7 +1,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'sensuctl'))
 
-Puppet::Type.type(:sensu_silenced).provide(:sensuctl, :parent => Puppet::Provider::Sensuctl) do
-  desc "Provider sensu_silenced using sensuctl"
+Puppet::Type.type(:sensugo_silenced).provide(:sensuctl, :parent => Puppet::Provider::Sensuctl) do
+  desc "Provider sensugo_silenced using sensuctl"
 
   mk_resource_methods
 

@@ -1,19 +1,19 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu without SSL', unless: RSpec.configuration.sensu_cluster do
-  backend = hosts_as('sensu_backend')[0]
-  agent = hosts_as('sensu_agent')[0]
+describe 'sensu without SSL', unless: RSpec.configuration.sensugo_cluster do
+  backend = hosts_as('sensugo_backend')[0]
+  agent = hosts_as('sensugo_agent')[0]
   context 'backend' do
     it 'should work without errors' do
       pp = <<-EOS
       class { '::sensu':
         use_ssl => false,
       }
-      class { '::sensu::backend':
+      class { '::sensugo::backend':
         password     => 'P@ssw0rd!',
         old_password => 'supersecret',
       }
-      sensu_entity { 'sensu_agent':
+      sensugo_entity { 'sensugo_agent':
         ensure => 'absent',
       }
       EOS
@@ -40,10 +40,10 @@ describe 'sensu without SSL', unless: RSpec.configuration.sensu_cluster do
       class { '::sensu':
         use_ssl => false,
       }
-      class { '::sensu::agent':
-        backends    => ['sensu_backend:8081'],
+      class { '::sensugo::agent':
+        backends    => ['sensugo_backend:8081'],
         config_hash => {
-          'name' => 'sensu_agent',
+          'name' => 'sensugo_agent',
         }
       }
       EOS
@@ -58,7 +58,7 @@ describe 'sensu without SSL', unless: RSpec.configuration.sensu_cluster do
       it { should be_running }
     end
 
-    describe command('sensuctl entity info sensu_agent'), :node => backend do
+    describe command('sensuctl entity info sensugo_agent'), :node => backend do
       its(:exit_status) { should eq 0 }
     end
   end

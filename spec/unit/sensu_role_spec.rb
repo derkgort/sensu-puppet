@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_role'
+require 'puppet/type/sensugo_role'
 
-describe Puppet::Type.type(:sensu_role) do
+describe Puppet::Type.type(:sensugo_role) do
   let(:default_config) do
     {
       name: 'test',

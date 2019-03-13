@@ -1,5 +1,5 @@
 module PuppetX
-  module Sensu
+  module SensuGo
     class ArrayOfHashesProperty < Puppet::Property
       def change_to_s(currentvalue, newvalue)
         currentvalue = currentvalue.to_s if currentvalue != :absent

@@ -1,7 +1,7 @@
 # @summary Private class to manage sensu community repository resources
 # @api private
 #
-class sensu::repo::community {
+class sensugo::repo::community {
 
   if $facts['os']['family'] == 'RedHat' {
     if $facts['os']['name'] == 'Amazon' {
@@ -13,10 +13,10 @@ class sensu::repo::community {
     } else {
       $repo_release = $facts['os']['release']['major']
     }
-    yumrepo { 'sensu_community':
+    yumrepo { 'sensugo_community':
       ensure          => 'present',
       baseurl         => "https://packagecloud.io/sensu/community/el/${repo_release}/\$basearch",
-      descr           => 'sensu_community',
+      descr           => 'sensugo_community',
       enabled         => 1,
       gpgcheck        => 0,
       gpgkey          => 'https://packagecloud.io/sensu/community/gpgkey',
@@ -27,7 +27,7 @@ class sensu::repo::community {
     }
   }
   if $facts['os']['family'] == 'Debian' {
-    apt::source { 'sensu_community':
+    apt::source { 'sensugo_community':
       ensure   => 'present',
       location => "https://packagecloud.io/sensu/community/${downcase($facts['os']['name'])}/",
       repos    => 'main',

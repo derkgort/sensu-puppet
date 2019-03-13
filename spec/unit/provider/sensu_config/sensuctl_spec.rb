@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:sensu_config).provider(:sensuctl) do
+describe Puppet::Type.type(:sensugo_config).provider(:sensuctl) do
   before(:each) do
     @provider = described_class
-    @type = Puppet::Type.type(:sensu_config)
+    @type = Puppet::Type.type(:sensugo_config)
     @resource = @type.new({
       :name => 'format',
       :value => 'json',
@@ -42,7 +42,7 @@ describe Puppet::Type.type(:sensu_config).provider(:sensuctl) do
 
   describe 'destroy' do
     it 'should not support deleting a config' do
-      expect(Puppet).to receive(:warning).with(/sensu_config does not support ensure=absent/)
+      expect(Puppet).to receive(:warning).with(/sensugo_config does not support ensure=absent/)
       @resource.provider.destroy
     end
   end

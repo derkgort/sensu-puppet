@@ -1,5 +1,5 @@
 {
-  "name": "sensu-sensu",
+  "name": "sensu-sensugo",
   "version": "3.0.0",
   "author": "sensu",
   "summary": "A module to install the Sensu monitoring framework",

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:sensu_entity).provider(:sensuctl) do
+describe Puppet::Type.type(:sensugo_entity).provider(:sensuctl) do
   before(:each) do
     @provider = described_class
-    @resource = Puppet::Type.type(:sensu_entity).new({name: 'test'})
+    @resource = Puppet::Type.type(:sensugo_entity).new({name: 'test'})
   end
 
   describe 'self.instances' do

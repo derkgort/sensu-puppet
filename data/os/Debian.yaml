@@ -1,5 +1,5 @@
 ---
-sensu::plugins::dependencies:
+sensugo::plugins::dependencies:
   - make
   - gcc
   - g++

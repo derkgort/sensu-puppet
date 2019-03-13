@@ -3,22 +3,22 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_config) do
+Puppet::Type.newtype(:sensugo_config) do
   desc <<-DESC
 @summary Manages Sensu configs
 @example Manage a config
-  sensu_config { 'format':
+  sensugo_config { 'format':
     value => 'json',
   }
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires(false)
 
   ensurable do
@@ -26,7 +26,7 @@ DESC
     defaultvalues
     validate do |value|
       if value.to_sym == :absent
-        raise ArgumentError, "sensu_config ensure does not support absent"
+        raise ArgumentError, "sensugo_config ensure does not support absent"
       end
     end
   end
@@ -35,7 +35,7 @@ DESC
     desc "The name of the config."
     validate do |value|
       unless value =~ /^[\w\.\-\_]+$/
-        raise ArgumentError, "sensu_config name invalid"
+        raise ArgumentError, "sensugo_config name invalid"
       end
     end
   end

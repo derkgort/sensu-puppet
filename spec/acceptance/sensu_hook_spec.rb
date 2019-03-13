@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_hook', if: RSpec.configuration.sensu_full do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo_hook', if: RSpec.configuration.sensugo_full do
+  node = hosts_as('sensugo_backend')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_hook { 'test':
+      include ::sensugo::backend
+      sensugo_hook { 'test':
         command => 'ps aux',
         labels  => { 'foo' => 'baz' },
       }
@@ -30,8 +30,8 @@ describe 'sensu_hook', if: RSpec.configuration.sensu_full do
   context 'update hook' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_hook { 'test':
+      include ::sensugo::backend
+      sensugo_hook { 'test':
         command => 'ps aux',
         timeout => 120,
         labels  => { 'foo' => 'bar' },
@@ -55,8 +55,8 @@ describe 'sensu_hook', if: RSpec.configuration.sensu_full do
   context 'ensure => absent' do
     it 'should remove without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_hook { 'test': ensure => 'absent' }
+      include ::sensugo::backend
+      sensugo_hook { 'test': ensure => 'absent' }
       EOS
 
       # Run it twice and test for idempotency

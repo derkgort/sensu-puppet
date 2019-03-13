@@ -4,20 +4,20 @@ module Puppet
   module Util
     # Validator class, for testing that SensuAPI is alive
     class SensuAPIValidator
-      attr_reader :sensu_api_server
-      attr_reader :sensu_api_port
+      attr_reader :sensugo_api_server
+      attr_reader :sensugo_api_port
       attr_reader :use_ssl
       attr_reader :test_path
       attr_reader :test_headers
 
-      def initialize(sensu_api_server, sensu_api_port, use_ssl=false, test_path = "/health")
-        @sensu_api_server = sensu_api_server
-        @sensu_api_port   = sensu_api_port
+      def initialize(sensugo_api_server, sensugo_api_port, use_ssl=false, test_path = "/health")
+        @sensugo_api_server = sensugo_api_server
+        @sensugo_api_port   = sensugo_api_port
         @use_ssl         = use_ssl
         @test_path       = test_path
       end
 
-      # Utility method; attempts to make an http/https connection to the sensu_api server.
+      # Utility method; attempts to make an http/https connection to the sensugo_api server.
       # This is abstracted out into a method so that it can be called multiple times
       # for retry attempts.
       #
@@ -25,8 +25,8 @@ module Puppet
       def attempt_connection
         # All that we care about is that we are able to connect successfully via
         # http(s), so here we're simpling hitting a somewhat arbitrary low-impact URL
-        # on the sensu_api server.
-        http = Net::HTTP.new(@sensu_api_server, @sensu_api_port)
+        # on the sensugo_api server.
+        http = Net::HTTP.new(@sensugo_api_server, @sensugo_api_port)
         http.use_ssl = @use_ssl
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         request = Net::HTTP::Get.new(@test_path)
@@ -34,12 +34,12 @@ module Puppet
         response = http.request(request)
 
         unless response.kind_of?(Net::HTTPSuccess) || response.kind_of?(Net::HTTPUnauthorized)
-          Puppet.notice "Unable to connect to sensu_api server (http#{use_ssl ? "s" : ""}://#{sensu_api_server}:#{sensu_api_port}): [#{response.code}] #{response.msg}"
+          Puppet.notice "Unable to connect to sensugo_api server (http#{use_ssl ? "s" : ""}://#{sensugo_api_server}:#{sensugo_api_port}): [#{response.code}] #{response.msg}"
           return false
         end
         return true
       rescue Exception => e
-        Puppet.notice "Unable to connect to sensu_api server (http#{use_ssl ? "s" : ""}://#{sensu_api_server}:#{sensu_api_port}): #{e.message}"
+        Puppet.notice "Unable to connect to sensugo_api server (http#{use_ssl ? "s" : ""}://#{sensugo_api_server}:#{sensugo_api_port}): #{e.message}"
         return false
       end
     end

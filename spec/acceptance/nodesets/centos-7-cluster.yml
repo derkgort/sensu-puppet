@@ -1,8 +1,8 @@
 HOSTS:
-  sensu_backend1:
+  sensugo_backend1:
     roles:
       - agent
-      - sensu_backend
+      - sensugo_backend
       - default
     platform: el-7-x86_64
     hypervisor: docker
@@ -14,10 +14,10 @@ HOSTS:
       - "sed -i -r '/^tsflags/d' /etc/yum.conf"
       - 'yum install -y wget'
     docker_container_name: 'sensu-backend1-el7'
-  sensu_backend2:
+  sensugo_backend2:
     roles:
       - agent
-      - sensu_backend
+      - sensugo_backend
     platform: el-7-x86_64
     hypervisor: docker
     image: centos:7
@@ -28,10 +28,10 @@ HOSTS:
       - "sed -i -r '/^tsflags/d' /etc/yum.conf"
       - 'yum install -y wget'
     docker_container_name: 'sensu-backend2-el7'
-  sensu_backend3:
+  sensugo_backend3:
     roles:
       - agent
-      - sensu_backend
+      - sensugo_backend
     platform: el-7-x86_64
     hypervisor: docker
     image: centos:7

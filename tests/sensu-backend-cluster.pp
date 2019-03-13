@@ -7,7 +7,7 @@ case $facts['hostname'] {
   }
 }
 
-class { '::sensu::backend':
+class { '::sensugo::backend':
   config_hash => {
     'etcd-advertise-client-urls'       => "http://${facts['networking']['interfaces']['eth1']['ip']}:2379",
     'etcd-listen-client-urls'          => "http://${facts['networking']['interfaces']['eth1']['ip']}:2379",

@@ -3,11 +3,11 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_handler) do
+Puppet::Type.newtype(:sensugo_handler) do
   desc <<-DESC
 @summary Manages Sensu handlers
 @example Create a handler
-  sensu_handler { 'test':
+  sensugo_handler { 'test':
     ensure  => 'present',
     type    => 'pipe',
     command => 'notify.rb'
@@ -16,16 +16,16 @@ Puppet::Type.newtype(:sensu_handler) do
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
-* `sensu_filter` - Puppet will autorequire `sensu_filter` resources defined in `filters` property.
-* `sensu_mutator` - Puppet will autorequire `sensu_mutator` resource defined for `mutator` property.
-* `sensu_handler` - Puppet will autorequire `sensu_handler` resources defined for `handlers` property.
-* `sensu_asset` - Puppet will autorequire `sensu_asset` resources defined in `runtime_assets` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
+* `sensugo_filter` - Puppet will autorequire `sensugo_filter` resources defined in `filters` property.
+* `sensugo_mutator` - Puppet will autorequire `sensugo_mutator` resource defined for `mutator` property.
+* `sensugo_handler` - Puppet will autorequire `sensugo_handler` resources defined for `handlers` property.
+* `sensugo_asset` - Puppet will autorequire `sensugo_asset` resources defined in `runtime_assets` property.
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires()
 
   ensurable
@@ -34,7 +34,7 @@ DESC
     desc "The name of the handler."
     validate do |value|
       unless value =~ /^[\w\.\-]+$/
-        raise ArgumentError, "sensu_handler name invalid"
+        raise ArgumentError, "sensugo_handler name invalid"
       end
     end
   end
@@ -44,7 +44,7 @@ DESC
     newvalues('pipe', 'tcp', 'udp', 'set')
   end
 
-  newproperty(:filters, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:filters, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "An array of Sensu event filters (names) to use when filtering events for the handler."
     newvalues(/.*/, :absent)
   end
@@ -54,7 +54,7 @@ DESC
     newvalues(/.*/, :absent)
   end
 
-  newproperty(:timeout, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:timeout, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc "The handler execution duration timeout in seconds (hard stop)"
     newvalues(/^[0-9]+$/, :absent)
     defaultto do
@@ -71,7 +71,7 @@ DESC
     newvalues(/.*/, :absent)
   end
 
-  newproperty(:env_vars, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:env_vars, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "An array of environment variables to use with command execution."
     newvalues(/.*/, :absent)
   end
@@ -80,16 +80,16 @@ DESC
     desc "The socket host address (IP or hostname) to connect to."
   end
 
-  newproperty(:socket_port, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:socket_port, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc "The socket port to connect to."
   end
 
-  newproperty(:handlers, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:handlers, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "An array of Sensu event handlers (names) to use for events using the handler set."
     newvalues(/.*/, :absent)
   end
 
-  newproperty(:runtime_assets, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:runtime_assets, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "An array of Sensu assets (names), required at runtime for the execution of the command"
     newvalues(/.*/, :absent)
   end
@@ -99,27 +99,27 @@ DESC
     defaultto 'default'
   end
 
-  newproperty(:labels, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:labels, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Custom attributes to include with event data, which can be queried like regular attributes."
   end
 
-  newproperty(:annotations, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:annotations, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Arbitrary, non-identifying metadata to include with event data."
   end
 
-  autorequire(:sensu_filter) do
+  autorequire(:sensugo_filter) do
     self[:filters]
   end
 
-  autorequire(:sensu_mutator) do
+  autorequire(:sensugo_mutator) do
     [ self[:mutator] ]
   end
 
-  autorequire(:sensu_handler) do
+  autorequire(:sensugo_handler) do
     self[:handlers]
   end
 
-  autorequire(:sensu_asset) do
+  autorequire(:sensugo_asset) do
     self[:runtime_assets]
   end
 

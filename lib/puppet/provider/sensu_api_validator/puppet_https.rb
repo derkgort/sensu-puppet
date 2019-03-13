@@ -7,15 +7,15 @@
 # mechanisms. This should be fixed in future versions of puppet but it looks
 # like we'll need to maintain this for some time perhaps.
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__),"..","..",".."))
-require 'puppet/util/sensu_api_validator'
+require 'puppet/util/sensugo_api_validator'
 
-# This file contains a provider for the resource type `sensu_api_validator`,
-# which validates the sensu_api connection by attempting an https connection.
+# This file contains a provider for the resource type `sensugo_api_validator`,
+# which validates the sensugo_api connection by attempting an https connection.
 
-Puppet::Type.type(:sensu_api_validator).provide(:puppet_https) do
-  desc "A provider for the resource type `sensu_api_validator`,
-        which validates the sensu_api connection by attempting an http(s)
-        connection to the sensu_api server.  Uses the puppet SSL certificate
+Puppet::Type.type(:sensugo_api_validator).provide(:puppet_https) do
+  desc "A provider for the resource type `sensugo_api_validator`,
+        which validates the sensugo_api connection by attempting an http(s)
+        connection to the sensugo_api server.  Uses the puppet SSL certificate
         setup from the local puppet environment to authenticate if use_ssl
         is set to true."
 
@@ -34,17 +34,17 @@ Puppet::Type.type(:sensu_api_validator).provide(:puppet_https) do
     success = validator.attempt_connection
 
     while success == false && ((Time.now - start_time) < timeout)
-      # It can take several seconds for the sensu_api server to start up;
+      # It can take several seconds for the sensugo_api server to start up;
       # especially on the first install.  Therefore, our first connection attempt
       # may fail.  Here we have somewhat arbitrarily chosen to retry every 2
       # seconds until the configurable timeout has expired.
-      Puppet.notice("Failed to connect to sensu_api; sleeping 2 seconds before retry")
+      Puppet.notice("Failed to connect to sensugo_api; sleeping 2 seconds before retry")
       sleep 2
       success = validator.attempt_connection
     end
 
     unless success
-      Puppet.notice("Failed to connect to sensu_api within timeout window of #{timeout} seconds; giving up.")
+      Puppet.notice("Failed to connect to sensugo_api within timeout window of #{timeout} seconds; giving up.")
     end
 
     success
@@ -57,7 +57,7 @@ Puppet::Type.type(:sensu_api_validator).provide(:puppet_https) do
     # If `#create` is called, that means that `#exists?` returned false, which
     # means that the connection could not be established... so we need to
     # cause a failure here.
-    raise Puppet::Error, "Unable to connect to sensu_api server! (#{@validator.sensu_api_server}:#{@validator.sensu_api_port})"
+    raise Puppet::Error, "Unable to connect to sensugo_api server! (#{@validator.sensugo_api_server}:#{@validator.sensugo_api_port})"
   end
 
   # Returns the existing validator, if one exists otherwise creates a new object
@@ -65,7 +65,7 @@ Puppet::Type.type(:sensu_api_validator).provide(:puppet_https) do
   #
   # @api private
   def validator
-    @validator ||= Puppet::Util::SensuAPIValidator.new(resource[:sensu_api_server], resource[:sensu_api_port], resource[:use_ssl], resource[:test_url])
+    @validator ||= Puppet::Util::SensuAPIValidator.new(resource[:sensugo_api_server], resource[:sensugo_api_port], resource[:use_ssl], resource[:test_url])
   end
 
 end

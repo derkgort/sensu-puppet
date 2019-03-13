@@ -1,7 +1,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'sensuctl'))
 
-Puppet::Type.type(:sensu_ldap_auth).provide(:sensuctl, :parent => Puppet::Provider::Sensuctl) do
-  desc "Provider sensu_ldap_auth using sensuctl"
+Puppet::Type.type(:sensugo_ldap_auth).provide(:sensuctl, :parent => Puppet::Provider::Sensuctl) do
+  desc "Provider sensugo_ldap_auth using sensuctl"
 
   mk_resource_methods
 

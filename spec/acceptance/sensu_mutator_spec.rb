@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_mutator', if: RSpec.configuration.sensu_full do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo_mutator', if: RSpec.configuration.sensugo_full do
+  node = hosts_as('sensugo_backend')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_mutator { 'test':
+      include ::sensugo::backend
+      sensugo_mutator { 'test':
         command        => 'test',
         runtime_assets => ['test'],
         labels         => { 'foo' => 'baz' },
@@ -31,8 +31,8 @@ describe 'sensu_mutator', if: RSpec.configuration.sensu_full do
   context 'update mutator' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_mutator { 'test':
+      include ::sensugo::backend
+      sensugo_mutator { 'test':
         command        => 'test',
         timeout        => 60,
         runtime_assets => ['test2'],
@@ -58,8 +58,8 @@ describe 'sensu_mutator', if: RSpec.configuration.sensu_full do
   context 'ensure => absent' do
     it 'should remove without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_mutator { 'test': ensure => 'absent' }
+      include ::sensugo::backend
+      sensugo_mutator { 'test': ensure => 'absent' }
       EOS
 
       # Run it twice and test for idempotency

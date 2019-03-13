@@ -4,11 +4,11 @@ require_relative '../../puppet_x/sensu/array_of_hashes_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_role) do
+Puppet::Type.newtype(:sensugo_role) do
   desc <<-DESC
 @summary Manages Sensu roles
 @example Add a role
-  sensu_role { 'test':
+  sensugo_role { 'test':
     ensure => 'present',
     rules  => [{'verbs' => ['get','list'], 'resources' => ['checks'], 'resource_names' => ['']}],
   }
@@ -16,12 +16,12 @@ Puppet::Type.newtype(:sensu_role) do
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires()
 
   ensurable
@@ -35,7 +35,7 @@ DESC
     defaultto 'default'
   end
 
-  newproperty(:rules, :array_matching => :all, :parent => PuppetX::Sensu::ArrayOfHashesProperty) do
+  newproperty(:rules, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayOfHashesProperty) do
     desc "The rulesets that a role applies."
     validate do |rule|
       if ! rule.is_a?(Hash)

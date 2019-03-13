@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_config'
+require 'puppet/type/sensugo_config'
 
-describe Puppet::Type.type(:sensu_config) do
+describe Puppet::Type.type(:sensugo_config) do
   let(:default_config) do
     {
       name: 'format',
@@ -11,14 +11,14 @@ describe Puppet::Type.type(:sensu_config) do
   let(:config) do
     default_config
   end
-  let(:sensu_config) do
+  let(:sensugo_config) do
     described_class.new(config)
   end
 
   it 'should add to catalog without raising an error' do
     catalog = Puppet::Resource::Catalog.new
     expect {
-      catalog.add_resource sensu_config
+      catalog.add_resource sensugo_config
     }.to_not raise_error
   end
 
@@ -30,7 +30,7 @@ describe Puppet::Type.type(:sensu_config) do
 
   it 'should not accept ensure => absent' do
     config[:ensure] = 'absent'
-    expect { sensu_config[:ensure] = 'absent' }.to raise_error(Puppet::Error, /ensure does not support absent/)
+    expect { sensugo_config[:ensure] = 'absent' }.to raise_error(Puppet::Error, /ensure does not support absent/)
   end
 
   defaults = {}
@@ -41,11 +41,11 @@ describe Puppet::Type.type(:sensu_config) do
   ].each do |property|
     it "should accept valid #{property}" do
       config[property] = 'foo'
-      expect(sensu_config[property]).to eq('foo')
+      expect(sensugo_config[property]).to eq('foo')
     end
     if default = defaults[property]
       it "should have default for #{property}" do
-        expect(sensu_config[property]).to eq(default)
+        expect(sensugo_config[property]).to eq(default)
       end
     end
   end
@@ -56,7 +56,7 @@ describe Puppet::Type.type(:sensu_config) do
   ].each do |property|
     it "should not accept invalid #{property}" do
       config[property] = 'foo bar'
-      expect { sensu_config }.to raise_error(Puppet::Error, /#{property.to_s} invalid/)
+      expect { sensugo_config }.to raise_error(Puppet::Error, /#{property.to_s} invalid/)
     end
   end
 
@@ -65,7 +65,7 @@ describe Puppet::Type.type(:sensu_config) do
   ].each do |property|
     it "should accept valid #{property}" do
       config[property] = ['foo', 'bar']
-      expect(sensu_config[property]).to eq(['foo', 'bar'])
+      expect(sensugo_config[property]).to eq(['foo', 'bar'])
     end
   end
 
@@ -74,15 +74,15 @@ describe Puppet::Type.type(:sensu_config) do
   ].each do |property|
     it "should accept valid #{property}" do
       config[property] = 30
-      expect(sensu_config[property]).to eq(30)
+      expect(sensugo_config[property]).to eq(30)
     end
     it "should accept valid #{property} as string" do
       config[property] = '30'
-      expect(sensu_config[property]).to eq(30)
+      expect(sensugo_config[property]).to eq(30)
     end
     it "should not accept invalid value for #{property}" do
       config[property] = 'foo'
-      expect { sensu_config }.to raise_error(Puppet::Error, /should be an Integer/)
+      expect { sensugo_config }.to raise_error(Puppet::Error, /should be an Integer/)
     end
   end
 
@@ -91,23 +91,23 @@ describe Puppet::Type.type(:sensu_config) do
   ].each do |property|
     it "should accept valid #{property}" do
       config[property] = true
-      expect(sensu_config[property]).to eq(:true)
+      expect(sensugo_config[property]).to eq(:true)
     end
     it "should accept valid #{property}" do
       config[property] = false
-      expect(sensu_config[property]).to eq(:false)
+      expect(sensugo_config[property]).to eq(:false)
     end
     it "should accept valid #{property}" do
       config[property] = 'true'
-      expect(sensu_config[property]).to eq(:true)
+      expect(sensugo_config[property]).to eq(:true)
     end
     it "should accept valid #{property}" do
       config[property] = 'false'
-      expect(sensu_config[property]).to eq(:false)
+      expect(sensugo_config[property]).to eq(:false)
     end
     it "should not accept invalid #{property}" do
       config[property] = 'foo'
-      expect { sensu_config }.to raise_error(Puppet::Error, /Invalid value "foo". Valid values are true, false/)
+      expect { sensugo_config }.to raise_error(Puppet::Error, /Invalid value "foo". Valid values are true, false/)
     end
   end
 
@@ -115,17 +115,17 @@ describe Puppet::Type.type(:sensu_config) do
   [
   ].each do |property|
     it "should accept valid #{property}" do
-      sensu_config[property] = { 'foo': 'bar' }
-      expect(sensu_config[property]).to eq({'foo': 'bar'})
+      sensugo_config[property] = { 'foo': 'bar' }
+      expect(sensugo_config[property]).to eq({'foo': 'bar'})
     end
     it "should not accept invalid #{property}" do
-      sensu_config[property] = 'foo'
-      expect { sensu_config }.to raise_error(Puppet::Error, /should be a Hash/)
+      sensugo_config[property] = 'foo'
+      expect { sensugo_config }.to raise_error(Puppet::Error, /should be a Hash/)
     end
   end
 
   include_examples 'autorequires', false do
-    let(:res) { sensu_config }
+    let(:res) { sensugo_config }
   end
 
   [
@@ -134,7 +134,7 @@ describe Puppet::Type.type(:sensu_config) do
     it "should require property when ensure => present" do
       config.delete(property)
       config[:ensure] = :present
-      expect { sensu_config }.to raise_error(Puppet::Error, /You must provide a #{property}/)
+      expect { sensugo_config }.to raise_error(Puppet::Error, /You must provide a #{property}/)
     end
   end
 end

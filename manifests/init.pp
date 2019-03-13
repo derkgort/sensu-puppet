@@ -36,7 +36,7 @@
 # @param ssl_ca_source
 #   Source of SSL CA used by sensu services
 #
-class sensu (
+class sensugo (
   String $version = 'installed',
   Stdlib::Absolutepath $etc_dir = '/etc/sensu',
   Stdlib::Absolutepath $ssl_dir = '/etc/sensu/ssl',
@@ -49,7 +49,7 @@ class sensu (
   String $ssl_ca_source = $facts['puppet_localcacert'],
 ) {
 
-  file { 'sensu_etc_dir':
+  file { 'sensugo_etc_dir':
     ensure  => 'directory',
     path    => $etc_dir,
     purge   => $etc_dir_purge,
@@ -58,7 +58,7 @@ class sensu (
   }
 
   if $use_ssl {
-    contain ::sensu::ssl
+    contain ::sensugo::ssl
   }
 
   case $facts['os']['family'] {
@@ -73,11 +73,11 @@ class sensu (
     }
   }
 
-  # $package_require is used by sensu::agent and sensu::backend
+  # $package_require is used by sensugo::agent and sensugo::backend
   # package resources
   if $manage_repo {
-    include ::sensu::repo
-    $package_require = [Class['::sensu::repo']] + $os_package_require
+    include ::sensugo::repo
+    $package_require = [Class['::sensugo::repo']] + $os_package_require
   } else {
     $package_require = undef
   }

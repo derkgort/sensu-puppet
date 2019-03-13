@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_ldap_auth'
+require 'puppet/type/sensugo_ldap_auth'
 
-describe Puppet::Type.type(:sensu_ldap_auth) do
+describe Puppet::Type.type(:sensugo_ldap_auth) do
   let(:default_config) do
     {
       name: 'ldap',

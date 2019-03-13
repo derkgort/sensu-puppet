@@ -1,16 +1,16 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_user', if: RSpec.configuration.sensu_full do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo_user', if: RSpec.configuration.sensugo_full do
+  node = hosts_as('sensugo_backend')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_user { 'test':
+      include ::sensugo::backend
+      sensugo_user { 'test':
         password => 'password',
         groups   => ['read-only'],
       }
-      sensu_user { 'test2':
+      sensugo_user { 'test2':
         password => 'password',
         groups   => ['read-only'],
       }
@@ -39,13 +39,13 @@ describe 'sensu_user', if: RSpec.configuration.sensu_full do
   context 'updates user' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_user { 'test':
+      include ::sensugo::backend
+      sensugo_user { 'test':
         password     => 'password2',
         old_password => 'password',
         groups       => ['read-only'],
       }
-      sensu_user { 'test2':
+      sensugo_user { 'test2':
         password => 'password',
         groups   => ['read-only','admin'],
         disabled => true,
@@ -74,8 +74,8 @@ describe 'sensu_user', if: RSpec.configuration.sensu_full do
   context 'updates user password' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_user { 'test':
+      include ::sensugo::backend
+      sensugo_user { 'test':
         password     => 'password3',
         old_password => 'password2',
         groups       => ['read-only'],
@@ -96,8 +96,8 @@ describe 'sensu_user', if: RSpec.configuration.sensu_full do
   context 'invalid old_password' do
     it 'should result in an error' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_user { 'test':
+      include ::sensugo::backend
+      sensugo_user { 'test':
         password     => 'password2',
         old_password => 'password4',
         groups       => ['read-only'],
@@ -111,8 +111,8 @@ describe 'sensu_user', if: RSpec.configuration.sensu_full do
   context 'ensure => absent' do
     it 'should result in error as unsupported' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_user { 'test': ensure => 'absent' }
+      include ::sensugo::backend
+      sensugo_user { 'test': ensure => 'absent' }
       EOS
 
       apply_manifest_on(node, pp, :expect_failures => true)

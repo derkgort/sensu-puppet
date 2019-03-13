@@ -3,11 +3,11 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_mutator) do
+Puppet::Type.newtype(:sensugo_mutator) do
   desc <<-DESC
 @summary Manages Sensu mutators
 @example Create a mutator
-  sensu_mutator { 'example':
+  sensugo_mutator { 'example':
     ensure  => 'present',
     command => 'example-mutator.rb',
   }
@@ -15,13 +15,13 @@ Puppet::Type.newtype(:sensu_mutator) do
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
-* `sensu_asset` - Puppet will autorequire `sensu_asset` resources defined in `runtime_assets` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
+* `sensugo_asset` - Puppet will autorequire `sensugo_asset` resources defined in `runtime_assets` property.
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires()
 
   ensurable
@@ -30,7 +30,7 @@ DESC
     desc "The name of the mutator."
     validate do |value|
       unless value =~ /^[\w\.\-]+$/
-        raise ArgumentError, "sensu_mutator name invalid"
+        raise ArgumentError, "sensugo_mutator name invalid"
       end
     end
   end
@@ -39,17 +39,17 @@ DESC
     desc "The mutator command to be executed."
   end
 
-  newproperty(:timeout, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:timeout, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc "The mutator execution duration timeout in seconds (hard stop)"
     newvalues(/^[0-9]+$/, :absent)
   end
 
-  newproperty(:runtime_assets, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:runtime_assets, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "An array of Sensu assets (names), required at runtime for the execution of the command"
     newvalues(/.*/, :absent)
   end
 
-  newproperty(:env_vars, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:env_vars, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "An array of environment variables to use with command execution."
     newvalues(/.*/, :absent)
   end
@@ -59,15 +59,15 @@ DESC
     defaultto 'default'
   end
 
-  newproperty(:labels, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:labels, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Custom attributes to include with event data, which can be queried like regular attributes."
   end
 
-  newproperty(:annotations, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:annotations, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Arbitrary, non-identifying metadata to include with event data."
   end
 
-  autorequire(:sensu_asset) do
+  autorequire(:sensugo_asset) do
     self[:runtime_assets]
   end
 

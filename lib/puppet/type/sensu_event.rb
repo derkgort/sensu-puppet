@@ -3,28 +3,28 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_event) do
+Puppet::Type.newtype(:sensugo_event) do
   desc <<-DESC
 @summary Manages Sensu events
 @example Resolve an event
-  sensu_event { 'test for sensu-agent':
+  sensugo_event { 'test for sensu-agent':
     ensure => 'resolve'
   }
 
 @example Delete an event
-  sensu_event { 'test for sensu-agent':
+  sensugo_event { 'test for sensu-agent':
     ensure => 'absent'
   }
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires()
 
   ensurable do

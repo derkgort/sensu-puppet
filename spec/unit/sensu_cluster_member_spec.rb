@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_cluster_member'
+require 'puppet/type/sensugo_cluster_member'
 
-describe Puppet::Type.type(:sensu_cluster_member) do
+describe Puppet::Type.type(:sensugo_cluster_member) do
   let(:default_config) do
     {
       name: 'test',

@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_entity', if: RSpec.configuration.sensu_full do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo_entity', if: RSpec.configuration.sensugo_full do
+  node = hosts_as('sensugo_backend')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_entity { 'test':
+      include ::sensugo::backend
+      sensugo_entity { 'test':
         entity_class           => 'proxy',
         deregistration_handler => 'slack-handler',
       }
@@ -30,8 +30,8 @@ describe 'sensu_entity', if: RSpec.configuration.sensu_full do
   context 'updates properties' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_entity { 'test':
+      include ::sensugo::backend
+      sensugo_entity { 'test':
         entity_class           => 'proxy',
         deregistration_handler => 'email-handler',
         labels                 => { 'foo' => 'bar' }
@@ -55,8 +55,8 @@ describe 'sensu_entity', if: RSpec.configuration.sensu_full do
   context 'ensure => absent' do
     it 'should remove without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_entity { 'test': ensure => 'absent' }
+      include ::sensugo::backend
+      sensugo_entity { 'test': ensure => 'absent' }
       EOS
 
       # Run it twice and test for idempotency

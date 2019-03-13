@@ -8,11 +8,11 @@ describe 'sensu', :type => :class do
         it { should compile }
 
         it { should contain_class('sensu')}
-        it { should contain_class('sensu::repo')}
-        it { should contain_class('sensu::ssl') }
+        it { should contain_class('sensugo::repo')}
+        it { should contain_class('sensugo::ssl') }
 
         it {
-          should contain_file('sensu_etc_dir').with({
+          should contain_file('sensugo_etc_dir').with({
             'ensure'  => 'directory',
             'path'    => '/etc/sensu',
             'purge'   => true,
@@ -24,7 +24,7 @@ describe 'sensu', :type => :class do
 
       context 'with use_ssl => false' do
         let(:params) { { :use_ssl => false } }
-        it { should_not contain_class('sensu::ssl') }
+        it { should_not contain_class('sensugo::ssl') }
       end
     end
   end

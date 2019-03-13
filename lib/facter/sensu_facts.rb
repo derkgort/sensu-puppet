@@ -1,6 +1,6 @@
 require 'facter'
 
-module SensuFacts
+module SensuGoFacts
   def self.which(cmd)
     path = Facter::Core::Execution.which(cmd)
     path
@@ -42,7 +42,7 @@ module SensuFacts
       agent = nil
     end
 
-    Facter.add(:sensu_agent) do
+    Facter.add(:sensugo_agent) do
       setcode do
         agent
       end
@@ -59,7 +59,7 @@ module SensuFacts
       backend = nil
     end
 
-    Facter.add(:sensu_backend) do
+    Facter.add(:sensugo_backend) do
       setcode do
         backend
       end
@@ -84,4 +84,4 @@ module SensuFacts
   end
 end
 
-SensuFacts.add_facts
+SensuGoFacts.add_facts

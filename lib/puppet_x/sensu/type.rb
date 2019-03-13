@@ -1,5 +1,5 @@
 module PuppetX
-  module Sensu
+  module SensuGo
     module Type
 
       def add_autorequires(namespace=true, require_configure=true)
@@ -12,17 +12,17 @@ module PuppetX
         end
 
         if require_configure
-          autorequire(:sensu_configure) do
+          autorequire(:sensugo_configure) do
             ['puppet']
           end
         end
 
-        autorequire(:sensu_api_validator) do
+        autorequire(:sensugo_api_validator) do
           [ 'sensu' ]
         end
 
         if namespace
-          autorequire(:sensu_namespace) do
+          autorequire(:sensugo_namespace) do
             [ self[:namespace] ]
           end
         end

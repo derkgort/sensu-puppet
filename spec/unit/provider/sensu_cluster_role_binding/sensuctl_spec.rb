@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:sensu_cluster_role_binding).provider(:sensuctl) do
+describe Puppet::Type.type(:sensugo_cluster_role_binding).provider(:sensuctl) do
   before(:each) do
     @provider = described_class
-    @type = Puppet::Type.type(:sensu_cluster_role_binding)
+    @type = Puppet::Type.type(:sensugo_cluster_role_binding)
     @resource = @type.new({
       :name => 'test',
       :role_ref => 'test-role',

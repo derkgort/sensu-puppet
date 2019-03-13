@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_cluster_role_binding'
+require 'puppet/type/sensugo_cluster_role_binding'
 
-describe Puppet::Type.type(:sensu_cluster_role_binding) do
+describe Puppet::Type.type(:sensugo_cluster_role_binding) do
   let(:default_config) do
     {
       name: 'test',
@@ -146,9 +146,9 @@ describe Puppet::Type.type(:sensu_cluster_role_binding) do
     end
   end
 
-  it 'should autorequire sensu_cluster_role' do
+  it 'should autorequire sensugo_cluster_role' do
     config[:role_ref] = 'test'
-    role = Puppet::Type.type(:sensu_cluster_role).new(:name => 'test', :rules => [{'verbs' => ['get','list'], 'resources' => ['checks']}])
+    role = Puppet::Type.type(:sensugo_cluster_role).new(:name => 'test', :rules => [{'verbs' => ['get','list'], 'resources' => ['checks']}])
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource binding
     catalog.add_resource role
@@ -157,9 +157,9 @@ describe Puppet::Type.type(:sensu_cluster_role_binding) do
     expect(rel.target.ref).to eq(binding.ref)
   end
 
-  it 'should autorequire sensu_user by user' do
+  it 'should autorequire sensugo_user by user' do
     config[:subjects] = [{'type' => 'User', 'name' => 'test'}]
-    user = Puppet::Type.type(:sensu_user).new(:name => 'test', :groups => ['group'], :password => 'foobar')
+    user = Puppet::Type.type(:sensugo_user).new(:name => 'test', :groups => ['group'], :password => 'foobar')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource binding
     catalog.add_resource user
@@ -168,9 +168,9 @@ describe Puppet::Type.type(:sensu_cluster_role_binding) do
     expect(rel.target.ref).to eq(binding.ref)
   end
 
-  it 'should autorequire sensu_user by group' do
+  it 'should autorequire sensugo_user by group' do
     config[:subjects] = [{'type' => 'Group', 'name' => 'group'}]
-    user = Puppet::Type.type(:sensu_user).new(:name => 'test', :groups => ['group'], :password => 'foobar')
+    user = Puppet::Type.type(:sensugo_user).new(:name => 'test', :groups => ['group'], :password => 'foobar')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource binding
     catalog.add_resource user

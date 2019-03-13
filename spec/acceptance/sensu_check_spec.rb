@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_check', if: RSpec.configuration.sensu_full do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo_check', if: RSpec.configuration.sensugo_full do
+  node = hosts_as('sensugo_backend')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_check { 'test':
+      include ::sensugo::backend
+      sensugo_check { 'test':
         command                          => 'check-http.rb',
         subscriptions                    => ['demo'],
         handlers                         => ['email'],
@@ -20,7 +20,7 @@ describe 'sensu_check', if: RSpec.configuration.sensu_full do
         output_metric_format             => 'nagios_perfdata',
         labels                           => { 'foo' => 'baz' }
       }
-      sensu_check { 'test2':
+      sensugo_check { 'test2':
         command       => 'check-cpu.rb',
         subscriptions => ['demo'],
         handlers      => ['email'],
@@ -57,8 +57,8 @@ describe 'sensu_check', if: RSpec.configuration.sensu_full do
   context 'updates check' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_check { 'test':
+      include ::sensugo::backend
+      sensugo_check { 'test':
         command                          => 'check-http.rb',
         subscriptions                    => ['demo'],
         interval                         => 60,
@@ -91,8 +91,8 @@ describe 'sensu_check', if: RSpec.configuration.sensu_full do
   context 'ensure => absent' do
     it 'should remove without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_check { 'test': ensure => 'absent' }
+      include ::sensugo::backend
+      sensugo_check { 'test': ensure => 'absent' }
       EOS
 
       # Run it twice and test for idempotency
@@ -108,7 +108,7 @@ describe 'sensu_check', if: RSpec.configuration.sensu_full do
   context 'resources purge' do
     it 'should remove without errors' do
       pp = <<-EOS
-      resources { 'sensu_check':
+      resources { 'sensugo_check':
         purge => true,
       }
       EOS

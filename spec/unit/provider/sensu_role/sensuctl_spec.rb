@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:sensu_role).provider(:sensuctl) do
+describe Puppet::Type.type(:sensugo_role).provider(:sensuctl) do
   before(:each) do
     @provider = described_class
-    @type = Puppet::Type.type(:sensu_role)
+    @type = Puppet::Type.type(:sensugo_role)
     @resource = @type.new({
       :name => 'test',
       :rules => [{'verbs' => ['get','list'], 'resources' => ['checks'], 'resource_names' => ['']}]

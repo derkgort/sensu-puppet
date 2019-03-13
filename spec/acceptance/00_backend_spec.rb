@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu::backend class', unless: RSpec.configuration.sensu_cluster do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo::backend class', unless: RSpec.configuration.sensugo_cluster do
+  node = hosts_as('sensugo_backend')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
       class { '::sensu': }
-      class { '::sensu::backend':
+      class { '::sensugo::backend':
         password     => 'supersecret',
         old_password => 'P@ssw0rd!',
       }
@@ -30,12 +30,12 @@ describe 'sensu::backend class', unless: RSpec.configuration.sensu_cluster do
     it 'should work without errors' do
       pp = <<-EOS
       class { '::sensu': }
-      class { '::sensu::backend':
+      class { '::sensugo::backend':
         password     => 'supersecret',
         old_password => 'P@ssw0rd!',
       }
-      class { '::sensu::agent':
-        backends => ['sensu_backend:8081'],
+      class { '::sensugo::agent':
+        backends => ['sensugo_backend:8081'],
       }
       EOS
 
@@ -57,7 +57,7 @@ describe 'sensu::backend class', unless: RSpec.configuration.sensu_cluster do
   context 'reset admin password' do
     it 'should work without errors' do
       pp = <<-EOS
-      class { '::sensu::backend':
+      class { '::sensugo::backend':
         password     => 'P@ssw0rd!',
         old_password => 'supersecret',
       }

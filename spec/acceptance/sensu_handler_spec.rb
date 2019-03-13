@@ -1,18 +1,18 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_handler', if: RSpec.configuration.sensu_full do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo_handler', if: RSpec.configuration.sensugo_full do
+  node = hosts_as('sensugo_backend')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_handler { 'test':
+      include ::sensugo::backend
+      sensugo_handler { 'test':
         type           => 'pipe',
         command        => 'notify.rb',
         runtime_assets => ['test'],
         labels         => { 'foo' => 'baz' },
       }
-      sensu_handler { 'test2':
+      sensugo_handler { 'test2':
         type           => 'tcp',
         socket_host    => '127.0.0.1',
         socket_port    => 1234,
@@ -49,15 +49,15 @@ describe 'sensu_handler', if: RSpec.configuration.sensu_full do
   context 'update handler' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_handler { 'test':
+      include ::sensugo::backend
+      sensugo_handler { 'test':
         type           => 'pipe',
         command        => 'notify.rb',
         filters        => ['production'],
         runtime_assets => ['test2'],
         labels         => { 'foo' => 'bar' },
       }
-      sensu_handler { 'test2':
+      sensugo_handler { 'test2':
         type           => 'tcp',
         socket_host    => 'localhost',
         socket_port    => 5678,
@@ -90,8 +90,8 @@ describe 'sensu_handler', if: RSpec.configuration.sensu_full do
   context 'ensure => absent' do
     it 'should remove without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_handler { 'test': ensure => 'absent' }
+      include ::sensugo::backend
+      sensugo_handler { 'test': ensure => 'absent' }
       EOS
 
       # Run it twice and test for idempotency

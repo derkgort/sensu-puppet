@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Sensu::Backend_URL' do
+describe 'Sensugo::Backend_URL' do
   context 'allows valid values' do
     [
       'localhost:8081',

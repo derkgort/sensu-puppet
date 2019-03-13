@@ -3,7 +3,7 @@
 # Class to manage the Sensu agent.
 #
 # @example
-#   class { 'sensu::agent':
+#   class { 'sensugo::agent':
 #     backends    => ['sensu-backend.example.com:8081'],
 #     config_hash => {
 #       'subscriptions => ['linux', 'apache-servers'],
@@ -26,35 +26,35 @@
 # @param backends
 #   Array of sensu backends to pass to `backend-url` config option.
 #   The protocol prefix of `ws://` or `wss://` are optional and will be determined
-#   based on `sensu::use_ssl` parameter by default.
+#   based on `sensugo::use_ssl` parameter by default.
 #   Passing `backend-url` as part of `config_hash` takes precedence.
 # @param show_diff
 #   Sets show_diff parameter for agent.yml configuration file
 #
-class sensu::agent (
+class sensugo::agent (
   Optional[String] $version = undef,
   String $package_name = 'sensu-go-agent',
   String $service_name = 'sensu-agent',
   String $service_ensure = 'running',
   Boolean $service_enable = true,
   Hash $config_hash = {},
-  Array[Sensu::Backend_URL] $backends = ['localhost:8081'],
+  Array[Sensugo::Backend_URL] $backends = ['localhost:8081'],
   Boolean $show_diff = true,
 ) {
 
-  include ::sensu
+  include ::sensugo
 
-  $etc_dir = $::sensu::etc_dir
-  $ssl_dir = $::sensu::ssl_dir
-  $use_ssl = $::sensu::use_ssl
-  $_version = pick($version, $::sensu::version)
+  $etc_dir = $::sensugo::etc_dir
+  $ssl_dir = $::sensugo::ssl_dir
+  $use_ssl = $::sensugo::use_ssl
+  $_version = pick($version, $::sensugo::version)
 
   if $use_ssl {
     $backend_protocol = 'wss'
     $ssl_config = {
       'trusted-ca-file' => "${ssl_dir}/ca.crt",
     }
-    $service_subscribe = Class['::sensu::ssl']
+    $service_subscribe = Class['::sensugo::ssl']
   } else {
     $backend_protocol = 'ws'
     $ssl_config = {}
@@ -75,11 +75,11 @@ class sensu::agent (
   package { 'sensu-go-agent':
     ensure  => $_version,
     name    => $package_name,
-    before  => File['sensu_etc_dir'],
-    require => $::sensu::package_require,
+    before  => File['sensugo_etc_dir'],
+    require => $::sensugo::package_require,
   }
 
-  file { 'sensu_agent_config':
+  file { 'sensugo_agent_config':
     ensure    => 'file',
     path      => "${etc_dir}/agent.yml",
     content   => to_yaml($config),

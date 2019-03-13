@@ -1,4 +1,4 @@
-include ::sensu::backend
-class { '::sensu::agent':
+include ::sensugo::backend
+class { '::sensugo::agent':
   backends => ['sensu-backend.example.com:8081']
 }

@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_entity'
+require 'puppet/type/sensugo_entity'
 
-describe Puppet::Type.type(:sensu_entity) do
+describe Puppet::Type.type(:sensugo_entity) do
   let(:default_config) do
     {
       name: 'test',
@@ -184,8 +184,8 @@ describe Puppet::Type.type(:sensu_entity) do
     let(:res) { entity }
   end
 
-  it 'should autorequire sensu_handler' do
-    handler = Puppet::Type.type(:sensu_handler).new(:name => 'test', :type => 'pipe', :command => 'test')
+  it 'should autorequire sensugo_handler' do
+    handler = Puppet::Type.type(:sensugo_handler).new(:name => 'test', :type => 'pipe', :command => 'test')
     catalog = Puppet::Resource::Catalog.new
     config[:deregistration_handler] = ['test']
     catalog.add_resource entity

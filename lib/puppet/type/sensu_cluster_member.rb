@@ -3,11 +3,11 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_cluster_member) do
+Puppet::Type.newtype(:sensugo_cluster_member) do
   desc <<-DESC
 @summary Manages Sensu cluster members
 @example Add a cluster member
-  sensu_cluster_member { 'backend2':
+  sensugo_cluster_member { 'backend2':
     ensure    => 'present',
     peer_urls => ['http://192.168.52.12:2380'],
   }
@@ -15,11 +15,11 @@ Puppet::Type.newtype(:sensu_cluster_member) do
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires(false)
 
   ensurable
@@ -28,7 +28,7 @@ DESC
     desc "The name of the cluster member."
   end
 
-  newproperty(:peer_urls, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:peer_urls, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "Array of cluster peer URLs"
   end
 

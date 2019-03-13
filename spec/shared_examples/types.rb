@@ -25,8 +25,8 @@ RSpec.shared_examples 'autorequires' do |namespace, configure|
   end
 
   if configure
-    it 'should autorequire Sensu_configure[puppet]' do
-      c = Puppet::Type.type(:sensu_configure).new(:name => 'puppet', :username => 'admin', :password => 'P@ssw0rd!', :url => 'http://127.0.0.1:8080')
+    it 'should autorequire sensugo_configure[puppet]' do
+      c = Puppet::Type.type(:sensugo_configure).new(:name => 'puppet', :username => 'admin', :password => 'P@ssw0rd!', :url => 'http://127.0.0.1:8080')
       catalog = Puppet::Resource::Catalog.new
       catalog.add_resource res
       catalog.add_resource c
@@ -36,8 +36,8 @@ RSpec.shared_examples 'autorequires' do |namespace, configure|
     end
   end
 
-  it 'should autorequire sensu_api_validator' do
-    validator = Puppet::Type.type(:sensu_api_validator).new(:name => 'sensu')
+  it 'should autorequire sensugo_api_validator' do
+    validator = Puppet::Type.type(:sensugo_api_validator).new(:name => 'sensu')
     catalog = Puppet::Resource::Catalog.new
     catalog.add_resource res
     catalog.add_resource validator
@@ -47,8 +47,8 @@ RSpec.shared_examples 'autorequires' do |namespace, configure|
   end
 
   if namespace
-    it 'should autorequire sensu_namespace' do
-      namespace = Puppet::Type.type(:sensu_namespace).new(:name => 'sensu')
+    it 'should autorequire sensugo_namespace' do
+      namespace = Puppet::Type.type(:sensugo_namespace).new(:name => 'sensu')
       res[:namespace] = 'sensu'
       catalog = Puppet::Resource::Catalog.new
       catalog.add_resource res

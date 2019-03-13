@@ -3,22 +3,22 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_plugin) do
+Puppet::Type.newtype(:sensugo_plugin) do
   desc <<-DESC
 @summary Manages Sensu plugins
 @example Install a sensu plugin
-  sensu_plugin { 'disk-checks':
+  sensugo_plugin { 'disk-checks':
     ensure  => 'present',
   }
 
 @example Install specific version of a sensu plugin
-  sensu_plugin { 'disk-checks':
+  sensugo_plugin { 'disk-checks':
     ensure  => 'present',
     version => '4.0.0',
   }
 
 @example Install latest version of a sensu plugin
-  sensu_plugin { 'disk-checks':
+  sensugo_plugin { 'disk-checks':
     ensure  => 'present',
     version => 'latest',
   }
@@ -27,7 +27,7 @@ Puppet::Type.newtype(:sensu_plugin) do
 * `Package[sensu-plugins-ruby]`
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
 
   ensurable
 

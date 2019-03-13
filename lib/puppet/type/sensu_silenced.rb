@@ -3,41 +3,41 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_silenced) do
+Puppet::Type.newtype(:sensugo_silenced) do
   desc <<-DESC
 @summary Manages Sensu silencing
 
-The name of a `sensu_silenced` resource may not match the name returned by sensuctl.
+The name of a `sensugo_silenced` resource may not match the name returned by sensuctl.
 The name from sensuctl will take the form of `subscription:check`.
-If you wish to have a `sensu_silenced` resource name match sensuctl then define the name
+If you wish to have a `sensugo_silenced` resource name match sensuctl then define the name
 using the `subscription:check` format and do not define `subscription` or `check` properties.
 
 The `subscription` and `check` properties take precedence over value in the name if name takes the form `subscription:check`.
 
-@example Create a silencing for all checks with subscription entity:sensu_agent
-  sensu_silenced { 'test':
+@example Create a silencing for all checks with subscription entity:sensugo_agent
+  sensugo_silenced { 'test':
     ensure       => 'present',
-    subscription => 'entity:sensu_agent',
+    subscription => 'entity:sensugo_agent',
   }
 
-@example Define silencing using composite name where `subscription=entity:sensu_agent` and `check=*`.
-  sensu_silenced { 'entity:sensu_agent:*':
+@example Define silencing using composite name where `subscription=entity:sensugo_agent` and `check=*`.
+  sensugo_silenced { 'entity:sensugo_agent:*':
     ensure => 'present',
   }
 
 @example Define silencing using composite name where `subscription=linux` and `check=check-http`.
-  sensu_silenced { 'linux:check-http':
+  sensugo_silenced { 'linux:check-http':
     ensure => 'present',
   }
 
 @example Define silencing where subscription is linux and check is check-http. The `subscription` property overrides the value from name.
-  sensu_silenced { 'test:check-http':
+  sensugo_silenced { 'test:check-http':
     ensure       => 'present',
     subscription => 'linux',
   }
 
 @example Define silencing where subscription is linux and check is test. The `check` property overrides the value from name.
-  sensu_silenced { 'linux:check-http':
+  sensugo_silenced { 'linux:check-http':
     ensure => 'present',
     check  => 'test',
   }
@@ -45,12 +45,12 @@ The `subscription` and `check` properties take precedence over value in the name
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires()
 
   ensurable
@@ -67,11 +67,11 @@ DESC
     desc "The name of the subscription the entry should match"
   end
 
-  newproperty(:begin, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:begin, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc "Time at which silence entry goes into effect, in epoch."
   end
 
-  newproperty(:expire, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:expire, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc "Number of seconds until this entry should be deleted."
     defaultto -1
   end
@@ -97,11 +97,11 @@ DESC
     defaultto 'default'
   end
 
-  newproperty(:labels, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:labels, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Custom attributes to include with event data, which can be queried like regular attributes."
   end
 
-  newproperty(:annotations, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:annotations, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Arbitrary, non-identifying metadata to include with event data."
   end
 

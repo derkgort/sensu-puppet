@@ -1,22 +1,22 @@
 # @summary Default sensu resources
 # @api private
 #
-class sensu::backend::resources {
-  include ::sensu::backend
+class sensugo::backend::resources {
+  include ::sensugo::backend
 
-  sensu_namespace { 'default':
+  sensugo_namespace { 'default':
     ensure => 'present',
   }
 
-  sensu_user { 'agent':
+  sensugo_user { 'agent':
     ensure       => 'present',
     disabled     => false,
-    password     => $::sensu::backend::agent_password,
-    old_password => $::sensu::backend::agent_old_password,
+    password     => $::sensugo::backend::agent_password,
+    old_password => $::sensugo::backend::agent_old_password,
     groups       => ['system:agents'],
   }
 
-  sensu_cluster_role { 'admin':
+  sensugo_cluster_role { 'admin':
     ensure => 'present',
     rules  => [
       {
@@ -42,7 +42,7 @@ class sensu::backend::resources {
       },
     ],
   }
-  sensu_cluster_role { 'cluster-admin':
+  sensugo_cluster_role { 'cluster-admin':
     ensure => 'present',
     rules  => [
       {
@@ -51,7 +51,7 @@ class sensu::backend::resources {
       },
     ],
   }
-  sensu_cluster_role { 'edit':
+  sensugo_cluster_role { 'edit':
     ensure => 'present',
     rules  => [
       {
@@ -75,7 +75,7 @@ class sensu::backend::resources {
       },
     ],
   }
-  sensu_cluster_role { 'system:agent':
+  sensugo_cluster_role { 'system:agent':
     ensure => 'present',
     rules  => [
       {
@@ -84,7 +84,7 @@ class sensu::backend::resources {
       },
     ],
   }
-  sensu_cluster_role { 'system:user':
+  sensugo_cluster_role { 'system:user':
     ensure => 'present',
     rules  => [
       {
@@ -97,7 +97,7 @@ class sensu::backend::resources {
       },
     ],
   }
-  sensu_cluster_role { 'view':
+  sensugo_cluster_role { 'view':
     ensure => 'present',
     rules  => [
       {
@@ -119,7 +119,7 @@ class sensu::backend::resources {
     ],
   }
 
-  sensu_cluster_role_binding { 'cluster-admin':
+  sensugo_cluster_role_binding { 'cluster-admin':
     ensure   => 'present',
     role_ref => 'cluster-admin',
     subjects => [
@@ -129,7 +129,7 @@ class sensu::backend::resources {
       },
     ],
   }
-  sensu_cluster_role_binding { 'system:agent':
+  sensugo_cluster_role_binding { 'system:agent':
     ensure   => 'present',
     role_ref => 'system:agent',
     subjects => [
@@ -139,7 +139,7 @@ class sensu::backend::resources {
       },
     ],
   }
-  sensu_cluster_role_binding { 'system:user':
+  sensugo_cluster_role_binding { 'system:user':
     ensure   => 'present',
     role_ref => 'system:user',
     subjects => [

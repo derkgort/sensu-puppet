@@ -1,27 +1,27 @@
 # @summary Private class to manage sensu SSL resources
 # @api private
 #
-class sensu::ssl {
-  include ::sensu
+class sensugo::ssl {
+  include ::sensugo
 
-  file { 'sensu_ssl_dir':
+  file { 'sensugo_ssl_dir':
     ensure  => 'directory',
-    path    => $::sensu::ssl_dir,
-    purge   => $::sensu::ssl_dir_purge,
-    recurse => $::sensu::ssl_dir_purge,
-    force   => $::sensu::ssl_dir_purge,
-    owner   => $::sensu::user,
-    group   => $::sensu::group,
+    path    => $::sensugo::ssl_dir,
+    purge   => $::sensugo::ssl_dir_purge,
+    recurse => $::sensugo::ssl_dir_purge,
+    force   => $::sensugo::ssl_dir_purge,
+    owner   => $::sensugo::user,
+    group   => $::sensugo::group,
     mode    => '0700',
   }
 
-  file { 'sensu_ssl_ca':
+  file { 'sensugo_ssl_ca':
     ensure    => 'file',
-    path      => "${::sensu::ssl_dir}/ca.crt",
-    owner     => $::sensu::user,
-    group     => $::sensu::group,
+    path      => "${::sensugo::ssl_dir}/ca.crt",
+    owner     => $::sensugo::user,
+    group     => $::sensugo::group,
     mode      => '0644',
     show_diff => false,
-    source    => $::sensu::ssl_ca_source,
+    source    => $::sensugo::ssl_ca_source,
   }
 }

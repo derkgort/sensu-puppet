@@ -4,11 +4,11 @@ require_relative '../../puppet_x/sensu/array_of_hashes_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_cluster_role) do
+Puppet::Type.newtype(:sensugo_cluster_role) do
   desc <<-DESC
 @summary Manages Sensu cluster roles
 @example Add a cluster role
-  sensu_cluster_role { 'test':
+  sensugo_cluster_role { 'test':
     ensure => 'present',
     rules  => [{'verbs' => ['get','list'], 'resources' => ['checks'], 'resource_names' => ['']}],
   }
@@ -16,11 +16,11 @@ Puppet::Type.newtype(:sensu_cluster_role) do
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires(false)
 
   ensurable
@@ -29,7 +29,7 @@ DESC
     desc "The name of the role."
   end
 
-  newproperty(:rules, :array_matching => :all, :parent => PuppetX::Sensu::ArrayOfHashesProperty) do
+  newproperty(:rules, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayOfHashesProperty) do
     desc "The rulesets that a role applies."
     validate do |rule|
       if ! rule.is_a?(Hash)

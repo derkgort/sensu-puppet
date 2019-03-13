@@ -8,37 +8,37 @@
 _Public Classes_
 
 * [`sensu`](#sensu): Base Sensu class
-* [`sensu::agent`](#sensuagent): Manage Sensu agent
-* [`sensu::backend`](#sensubackend): Manage Sensu backend
+* [`sensugo::agent`](#sensuagent): Manage Sensu agent
+* [`sensugo::backend`](#sensubackend): Manage Sensu backend
 
 _Private Classes_
 
-* `sensu::backend::resources`: Default sensu resources
-* `sensu::repo`: Private class to manage sensu repository resources
-* `sensu::ssl`: Private class to manage sensu SSL resources
+* `sensugo::backend::resources`: Default sensu resources
+* `sensugo::repo`: Private class to manage sensu repository resources
+* `sensugo::ssl`: Private class to manage sensu SSL resources
 
 **Resource types**
 
-* [`sensu_api_validator`](#sensu_api_validator): Verify that a connection can be successfully established between a node and the sensu-backend server.  Its primary use is as a precondition t
-* [`sensu_asset`](#sensu_asset): Manages Sensu assets
-* [`sensu_check`](#sensu_check): Manages Sensu checks
-* [`sensu_cluster_member`](#sensu_cluster_member): Manages Sensu cluster members
-* [`sensu_cluster_role`](#sensu_cluster_role): Manages Sensu cluster roles
-* [`sensu_cluster_role_binding`](#sensu_cluster_role_binding): Manages Sensu cluster role bindings
-* [`sensu_config`](#sensu_config): Manages Sensu configs
-* [`sensu_configure`](#sensu_configure): Manages `sensuctl configure`. This is a private type not intended to be used directly.
-* [`sensu_entity`](#sensu_entity): Manages Sensu entities
-* [`sensu_event`](#sensu_event): Manages Sensu events
-* [`sensu_filter`](#sensu_filter): Manages Sensu filters
-* [`sensu_handler`](#sensu_handler): Manages Sensu handlers
-* [`sensu_hook`](#sensu_hook): Manages Sensu hooks
-* [`sensu_ldap_auth`](#sensu_ldap_auth): Manages Sensu LDAP auth. Requires valid enterprise license.
-* [`sensu_mutator`](#sensu_mutator): Manages Sensu mutators
-* [`sensu_namespace`](#sensu_namespace): Manages Sensu namespaces
-* [`sensu_role`](#sensu_role): Manages Sensu roles
-* [`sensu_role_binding`](#sensu_role_binding): Manages Sensu role bindings
-* [`sensu_silenced`](#sensu_silenced): Manages Sensu silencing
-* [`sensu_user`](#sensu_user): Manages Sensu users
+* [`sensugo_api_validator`](#sensugo_api_validator): Verify that a connection can be successfully established between a node and the sensu-backend server.  Its primary use is as a precondition t
+* [`sensugo_asset`](#sensugo_asset): Manages Sensu assets
+* [`sensugo_check`](#sensugo_check): Manages Sensu checks
+* [`sensugo_cluster_member`](#sensugo_cluster_member): Manages Sensu cluster members
+* [`sensugo_cluster_role`](#sensugo_cluster_role): Manages Sensu cluster roles
+* [`sensugo_cluster_role_binding`](#sensugo_cluster_role_binding): Manages Sensu cluster role bindings
+* [`sensugo_config`](#sensugo_config): Manages Sensu configs
+* [`sensugo_configure`](#sensugo_configure): Manages `sensuctl configure`. This is a private type not intended to be used directly.
+* [`sensugo_entity`](#sensugo_entity): Manages Sensu entities
+* [`sensugo_event`](#sensugo_event): Manages Sensu events
+* [`sensugo_filter`](#sensugo_filter): Manages Sensu filters
+* [`sensugo_handler`](#sensugo_handler): Manages Sensu handlers
+* [`sensugo_hook`](#sensugo_hook): Manages Sensu hooks
+* [`sensugo_ldap_auth`](#sensugo_ldap_auth): Manages Sensu LDAP auth. Requires valid enterprise license.
+* [`sensugo_mutator`](#sensugo_mutator): Manages Sensu mutators
+* [`sensugo_namespace`](#sensugo_namespace): Manages Sensu namespaces
+* [`sensugo_role`](#sensugo_role): Manages Sensu roles
+* [`sensugo_role_binding`](#sensugo_role_binding): Manages Sensu role bindings
+* [`sensugo_silenced`](#sensugo_silenced): Manages Sensu silencing
+* [`sensugo_user`](#sensugo_user): Manages Sensu users
 
 ## Classes
 
@@ -134,7 +134,7 @@ Source of SSL CA used by sensu services
 
 Default value: $facts['puppet_localcacert']
 
-### sensu::agent
+### sensugo::agent
 
 Class to manage the Sensu agent.
 
@@ -143,7 +143,7 @@ Class to manage the Sensu agent.
 ##### 
 
 ```puppet
-class { 'sensu::agent':
+class { 'sensugo::agent':
   backends    => ['sensu-backend.example.com:8081'],
   config_hash => {
     'subscriptions => ['linux', 'apache-servers'],
@@ -153,7 +153,7 @@ class { 'sensu::agent':
 
 #### Parameters
 
-The following parameters are available in the `sensu::agent` class.
+The following parameters are available in the `sensugo::agent` class.
 
 ##### `version`
 
@@ -206,11 +206,11 @@ Default value: {}
 
 ##### `backends`
 
-Data type: `Array[Sensu::Backend_URL]`
+Data type: `Array[Sensugo::Backend_URL]`
 
 Array of sensu backends to pass to `backend-url` config option.
 The protocol prefix of `ws://` or `wss://` are optional and will be determined
-based on `sensu::use_ssl` parameter by default.
+based on `sensugo::use_ssl` parameter by default.
 Passing `backend-url` as part of `config_hash` takes precedence.
 
 Default value: ['localhost:8081']
@@ -223,7 +223,7 @@ Sets show_diff parameter for agent.yml configuration file
 
 Default value: `true`
 
-### sensu::backend
+### sensugo::backend
 
 Class to manage the Sensu backend.
 
@@ -232,14 +232,14 @@ Class to manage the Sensu backend.
 ##### 
 
 ```puppet
-class { 'sensu::backend':
+class { 'sensugo::backend':
   password => 'secret',
 }
 ```
 
 #### Parameters
 
-The following parameters are available in the `sensu::backend` class.
+The following parameters are available in the `sensugo::backend` class.
 
 ##### `version`
 
@@ -407,11 +407,11 @@ Default value: `undef`
 
 ## Resource types
 
-### sensu_api_validator
+### sensugo_api_validator
 
 Verify that a connection can be successfully established between a node
 and the sensu-backend server.  Its primary use is as a precondition to
-prevent configuration changes from being applied if the sensu_backend
+prevent configuration changes from being applied if the sensugo_backend
 server cannot be reached, but it could potentially be used for other
 purposes such as monitoring.
 
@@ -420,15 +420,15 @@ purposes such as monitoring.
 ##### Verify API connectivity to localhost:8080
 
 ```puppet
-sensu_api_validator { 'sensu':
-  sensu_api_server => 'localhost',
-  sensu_api_ort    => 8080,
+sensugo_api_validator { 'sensu':
+  sensugo_api_server => 'localhost',
+  sensugo_api_ort    => 8080,
 }
 ```
 
 #### Properties
 
-The following properties are available in the `sensu_api_validator` type.
+The following properties are available in the `sensugo_api_validator` type.
 
 ##### `ensure`
 
@@ -440,7 +440,7 @@ Default value: present
 
 #### Parameters
 
-The following parameters are available in the `sensu_api_validator` type.
+The following parameters are available in the `sensugo_api_validator` type.
 
 ##### `name`
 
@@ -448,15 +448,15 @@ namevar
 
 An arbitrary name used as the identity of the resource.
 
-##### `sensu_api_server`
+##### `sensugo_api_server`
 
-The DNS name or IP address of the server where sensu_api should be running.
+The DNS name or IP address of the server where sensugo_api should be running.
 
 Default value: localhost
 
-##### `sensu_api_port`
+##### `sensugo_api_port`
 
-The port that the sensu_api server should be listening on.
+The port that the sensugo_api server should be listening on.
 
 Default value: 8080
 
@@ -474,25 +474,25 @@ Default value: /health
 
 ##### `timeout`
 
-The max number of seconds that the validator should wait before giving up and deciding that sensu_api is not running; defaults to 15 seconds.
+The max number of seconds that the validator should wait before giving up and deciding that sensugo_api is not running; defaults to 15 seconds.
 
 Default value: 30
 
-### sensu_asset
+### sensugo_asset
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
 
 #### Examples
 
 ##### Create an asset
 
 ```puppet
-sensu_asset { 'test':
+sensugo_asset { 'test':
   ensure  => 'present',
   url     => 'http://example.com/asset/example.tar',
   sha512  => '4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b',
@@ -502,7 +502,7 @@ sensu_asset { 'test':
 
 #### Properties
 
-The following properties are available in the `sensu_asset` type.
+The following properties are available in the `sensugo_asset` type.
 
 ##### `ensure`
 
@@ -542,7 +542,7 @@ Arbitrary, non-identifying metadata to include with event data.
 
 #### Parameters
 
-The following parameters are available in the `sensu_asset` type.
+The following parameters are available in the `sensugo_asset` type.
 
 ##### `name`
 
@@ -550,24 +550,24 @@ namevar
 
 The name of the asset.
 
-### sensu_check
+### sensugo_check
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
-* `sensu_handler` - Puppet will autorequie `sensu_handler` resources defined in `handlers` property.
-* `sensu_asset` - Puppet will autorequire `sensu_asset` resources defined in `runtime_assets` property.
-* `sensu_hook` - Puppet will autorequire `sensu_hook` resources defined in `check_hooks` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
+* `sensugo_handler` - Puppet will autorequie `sensugo_handler` resources defined in `handlers` property.
+* `sensugo_asset` - Puppet will autorequire `sensugo_asset` resources defined in `runtime_assets` property.
+* `sensugo_hook` - Puppet will autorequire `sensugo_hook` resources defined in `check_hooks` property.
 
 #### Examples
 
 ##### Create a check
 
 ```puppet
-sensu_check { 'test':
+sensugo_check { 'test':
   ensure        => 'present',
   command       => 'check-http.rb',
   subscriptions => ['demo'],
@@ -579,7 +579,7 @@ sensu_check { 'test':
 ##### Create a check that has a hook
 
 ```puppet
-sensu_check { 'test':
+sensugo_check { 'test':
   ensure        => 'present',
   command       => 'check-cpu.sh -w 75 -c 90',
   subscriptions => ['linux'],
@@ -593,7 +593,7 @@ sensu_check { 'test':
 
 #### Properties
 
-The following properties are available in the `sensu_check` type.
+The following properties are available in the `sensugo_check` type.
 
 ##### `ensure`
 
@@ -753,7 +753,7 @@ Arbitrary, non-identifying metadata to include with event data.
 
 #### Parameters
 
-The following parameters are available in the `sensu_check` type.
+The following parameters are available in the `sensugo_check` type.
 
 ##### `name`
 
@@ -761,20 +761,20 @@ namevar
 
 The name of the check.
 
-### sensu_cluster_member
+### sensugo_cluster_member
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
 
 #### Examples
 
 ##### Add a cluster member
 
 ```puppet
-sensu_cluster_member { 'backend2':
+sensugo_cluster_member { 'backend2':
   ensure    => 'present',
   peer_urls => ['http://192.168.52.12:2380'],
 }
@@ -782,7 +782,7 @@ sensu_cluster_member { 'backend2':
 
 #### Properties
 
-The following properties are available in the `sensu_cluster_member` type.
+The following properties are available in the `sensugo_cluster_member` type.
 
 ##### `ensure`
 
@@ -798,7 +798,7 @@ Array of cluster peer URLs
 
 #### Parameters
 
-The following parameters are available in the `sensu_cluster_member` type.
+The following parameters are available in the `sensugo_cluster_member` type.
 
 ##### `name`
 
@@ -810,20 +810,20 @@ The name of the cluster member.
 
 Cluster member ID - read-only
 
-### sensu_cluster_role
+### sensugo_cluster_role
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
 
 #### Examples
 
 ##### Add a cluster role
 
 ```puppet
-sensu_cluster_role { 'test':
+sensugo_cluster_role { 'test':
   ensure => 'present',
   rules  => [{'verbs' => ['get','list'], 'resources' => ['checks'], 'resource_names' => ['']}],
 }
@@ -831,7 +831,7 @@ sensu_cluster_role { 'test':
 
 #### Properties
 
-The following properties are available in the `sensu_cluster_role` type.
+The following properties are available in the `sensugo_cluster_role` type.
 
 ##### `ensure`
 
@@ -847,7 +847,7 @@ The rulesets that a role applies.
 
 #### Parameters
 
-The following parameters are available in the `sensu_cluster_role` type.
+The following parameters are available in the `sensugo_cluster_role` type.
 
 ##### `name`
 
@@ -855,22 +855,22 @@ namevar
 
 The name of the role.
 
-### sensu_cluster_role_binding
+### sensugo_cluster_role_binding
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_cluster_role` - Puppet will autorequire `sensu_cluster_role` resource defined in `role_ref` property.
-* `sensu_user` - Puppet will autorequire `sensu_user` resources based on users and groups defined for the `subjects` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_cluster_role` - Puppet will autorequire `sensugo_cluster_role` resource defined in `role_ref` property.
+* `sensugo_user` - Puppet will autorequire `sensugo_user` resources based on users and groups defined for the `subjects` property.
 
 #### Examples
 
 ##### Add a cluster role binding
 
 ```puppet
-sensu_cluster_role_binding { 'test':
+sensugo_cluster_role_binding { 'test':
   ensure   => 'present',
   role_ref => 'test-role',
   subjects => [
@@ -881,7 +881,7 @@ sensu_cluster_role_binding { 'test':
 
 #### Properties
 
-The following properties are available in the `sensu_cluster_role_binding` type.
+The following properties are available in the `sensugo_cluster_role_binding` type.
 
 ##### `ensure`
 
@@ -901,7 +901,7 @@ The users or groups being assigned.
 
 #### Parameters
 
-The following parameters are available in the `sensu_cluster_role_binding` type.
+The following parameters are available in the `sensugo_cluster_role_binding` type.
 
 ##### `name`
 
@@ -909,27 +909,27 @@ namevar
 
 The name of the role binding.
 
-### sensu_config
+### sensugo_config
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
 
 #### Examples
 
 ##### Manage a config
 
 ```puppet
-sensu_config { 'format':
+sensugo_config { 'format':
   value => 'json',
 }
 ```
 
 #### Properties
 
-The following properties are available in the `sensu_config` type.
+The following properties are available in the `sensugo_config` type.
 
 ##### `ensure`
 
@@ -945,7 +945,7 @@ The value of the config.
 
 #### Parameters
 
-The following parameters are available in the `sensu_config` type.
+The following parameters are available in the `sensugo_config` type.
 
 ##### `name`
 
@@ -953,17 +953,17 @@ namevar
 
 The name of the config.
 
-### sensu_configure
+### sensugo_configure
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_api_validator[sensu]`
 * `file` - Puppet will autorequire `file` resources defined in `trusted_ca_file` property.
 
 #### Properties
 
-The following properties are available in the `sensu_configure` type.
+The following properties are available in the `sensugo_configure` type.
 
 ##### `ensure`
 
@@ -985,7 +985,7 @@ Default value: /etc/sensu/ssl/ca.crt
 
 #### Parameters
 
-The following parameters are available in the `sensu_configure` type.
+The following parameters are available in the `sensugo_configure` type.
 
 ##### `name`
 
@@ -1007,22 +1007,22 @@ Password to use when bootstrapping sensuctl
 
 Default value: P@ssw0rd!
 
-### sensu_entity
+### sensugo_entity
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
-* `sensu_handler` - Puppet will autorequie `sensu_handler` resource defined in `deregistration_handler` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
+* `sensugo_handler` - Puppet will autorequie `sensugo_handler` resource defined in `deregistration_handler` property.
 
 #### Examples
 
 ##### Create an entity
 
 ```puppet
-sensu_entity { 'test':
+sensugo_entity { 'test':
   ensure       => 'present',
   entity_class => 'proxy',
 }
@@ -1030,7 +1030,7 @@ sensu_entity { 'test':
 
 #### Properties
 
-The following properties are available in the `sensu_entity` type.
+The following properties are available in the `sensugo_entity` type.
 
 ##### `ensure`
 
@@ -1088,7 +1088,7 @@ Arbitrary, non-identifying metadata to include with event data.
 
 #### Parameters
 
-The following parameters are available in the `sensu_entity` type.
+The following parameters are available in the `sensugo_entity` type.
 
 ##### `name`
 
@@ -1096,21 +1096,21 @@ namevar
 
 The unique name of the entity
 
-### sensu_event
+### sensugo_event
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
 
 #### Examples
 
 ##### Resolve an event
 
 ```puppet
-sensu_event { 'test for sensu-agent':
+sensugo_event { 'test for sensu-agent':
   ensure => 'resolve'
 }
 ```
@@ -1118,14 +1118,14 @@ sensu_event { 'test for sensu-agent':
 ##### Delete an event
 
 ```puppet
-sensu_event { 'test for sensu-agent':
+sensugo_event { 'test for sensu-agent':
   ensure => 'absent'
 }
 ```
 
 #### Properties
 
-The following properties are available in the `sensu_event` type.
+The following properties are available in the `sensugo_event` type.
 
 ##### `ensure`
 
@@ -1137,7 +1137,7 @@ The basic property that the resource should be in.
 
 #### Parameters
 
-The following parameters are available in the `sensu_event` type.
+The following parameters are available in the `sensugo_event` type.
 
 ##### `name`
 
@@ -1159,22 +1159,22 @@ The Sensu RBAC namespace that this event belongs to.
 
 Default value: default
 
-### sensu_filter
+### sensugo_filter
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
-* `sensu_asset` - Puppet will autorequire `sensu_asset` resources defined in `runtime_assets` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
+* `sensugo_asset` - Puppet will autorequire `sensugo_asset` resources defined in `runtime_assets` property.
 
 #### Examples
 
 ##### Create a filter
 
 ```puppet
-sensu_filter { 'test':
+sensugo_filter { 'test':
   ensure      => 'present',
   action      => 'allow',
   expressions => ["event.Entity.Environment == 'production'"],
@@ -1183,7 +1183,7 @@ sensu_filter { 'test':
 
 #### Properties
 
-The following properties are available in the `sensu_filter` type.
+The following properties are available in the `sensugo_filter` type.
 
 ##### `ensure`
 
@@ -1225,7 +1225,7 @@ Arbitrary, non-identifying metadata to include with event data.
 
 #### Parameters
 
-The following parameters are available in the `sensu_filter` type.
+The following parameters are available in the `sensugo_filter` type.
 
 ##### `name`
 
@@ -1233,25 +1233,25 @@ namevar
 
 The name of the filter.
 
-### sensu_handler
+### sensugo_handler
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
-* `sensu_filter` - Puppet will autorequire `sensu_filter` resources defined in `filters` property.
-* `sensu_mutator` - Puppet will autorequire `sensu_mutator` resource defined for `mutator` property.
-* `sensu_handler` - Puppet will autorequire `sensu_handler` resources defined for `handlers` property.
-* `sensu_asset` - Puppet will autorequire `sensu_asset` resources defined in `runtime_assets` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
+* `sensugo_filter` - Puppet will autorequire `sensugo_filter` resources defined in `filters` property.
+* `sensugo_mutator` - Puppet will autorequire `sensugo_mutator` resource defined for `mutator` property.
+* `sensugo_handler` - Puppet will autorequire `sensugo_handler` resources defined for `handlers` property.
+* `sensugo_asset` - Puppet will autorequire `sensugo_asset` resources defined in `runtime_assets` property.
 
 #### Examples
 
 ##### Create a handler
 
 ```puppet
-sensu_handler { 'test':
+sensugo_handler { 'test':
   ensure  => 'present',
   type    => 'pipe',
   command => 'notify.rb'
@@ -1260,7 +1260,7 @@ sensu_handler { 'test':
 
 #### Properties
 
-The following properties are available in the `sensu_handler` type.
+The following properties are available in the `sensugo_handler` type.
 
 ##### `ensure`
 
@@ -1342,7 +1342,7 @@ Arbitrary, non-identifying metadata to include with event data.
 
 #### Parameters
 
-The following parameters are available in the `sensu_handler` type.
+The following parameters are available in the `sensugo_handler` type.
 
 ##### `name`
 
@@ -1350,21 +1350,21 @@ namevar
 
 The name of the handler.
 
-### sensu_hook
+### sensugo_hook
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
 
 #### Examples
 
 ##### Create a hook
 
 ```puppet
-sensu_hook { 'test':
+sensugo_hook { 'test':
   ensure  => 'present',
   command => 'ps aux',
 }
@@ -1372,7 +1372,7 @@ sensu_hook { 'test':
 
 #### Properties
 
-The following properties are available in the `sensu_hook` type.
+The following properties are available in the `sensugo_hook` type.
 
 ##### `ensure`
 
@@ -1416,7 +1416,7 @@ Arbitrary, non-identifying metadata to include with event data.
 
 #### Parameters
 
-The following parameters are available in the `sensu_hook` type.
+The following parameters are available in the `sensugo_hook` type.
 
 ##### `name`
 
@@ -1424,13 +1424,13 @@ namevar
 
 The name of the hook.
 
-### sensu_ldap_auth
+### sensugo_ldap_auth
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
 * `Exec[sensu-add-license]`
 
 #### Examples
@@ -1438,7 +1438,7 @@ The name of the hook.
 ##### Add a LDAP auth
 
 ```puppet
-sensu_ldap_auth { 'openldap':
+sensugo_ldap_auth { 'openldap':
   ensure              => 'present',
   servers             => [
     {
@@ -1467,7 +1467,7 @@ sensu_ldap_auth { 'openldap':
 
 #### Properties
 
-The following properties are available in the `sensu_ldap_auth` type.
+The following properties are available in the `sensugo_ldap_auth` type.
 
 ##### `ensure`
 
@@ -1514,7 +1514,7 @@ The prefix added to all LDAP usernames.
 
 #### Parameters
 
-The following parameters are available in the `sensu_ldap_auth` type.
+The following parameters are available in the `sensugo_ldap_auth` type.
 
 ##### `name`
 
@@ -1522,22 +1522,22 @@ namevar
 
 The name of the LDAP auth.
 
-### sensu_mutator
+### sensugo_mutator
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
-* `sensu_asset` - Puppet will autorequire `sensu_asset` resources defined in `runtime_assets` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
+* `sensugo_asset` - Puppet will autorequire `sensugo_asset` resources defined in `runtime_assets` property.
 
 #### Examples
 
 ##### Create a mutator
 
 ```puppet
-sensu_mutator { 'example':
+sensugo_mutator { 'example':
   ensure  => 'present',
   command => 'example-mutator.rb',
 }
@@ -1545,7 +1545,7 @@ sensu_mutator { 'example':
 
 #### Properties
 
-The following properties are available in the `sensu_mutator` type.
+The following properties are available in the `sensugo_mutator` type.
 
 ##### `ensure`
 
@@ -1593,7 +1593,7 @@ Arbitrary, non-identifying metadata to include with event data.
 
 #### Parameters
 
-The following parameters are available in the `sensu_mutator` type.
+The following parameters are available in the `sensugo_mutator` type.
 
 ##### `name`
 
@@ -1601,27 +1601,27 @@ namevar
 
 The name of the mutator.
 
-### sensu_namespace
+### sensugo_namespace
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
 
 #### Examples
 
 ##### Add an namespace
 
 ```puppet
-sensu_namespace { 'test':
+sensugo_namespace { 'test':
   ensure => 'present',
 }
 ```
 
 #### Properties
 
-The following properties are available in the `sensu_namespace` type.
+The following properties are available in the `sensugo_namespace` type.
 
 ##### `ensure`
 
@@ -1633,7 +1633,7 @@ Default value: present
 
 #### Parameters
 
-The following parameters are available in the `sensu_namespace` type.
+The following parameters are available in the `sensugo_namespace` type.
 
 ##### `name`
 
@@ -1641,21 +1641,21 @@ namevar
 
 The name of the namespace.
 
-### sensu_role
+### sensugo_role
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
 
 #### Examples
 
 ##### Add a role
 
 ```puppet
-sensu_role { 'test':
+sensugo_role { 'test':
   ensure => 'present',
   rules  => [{'verbs' => ['get','list'], 'resources' => ['checks'], 'resource_names' => ['']}],
 }
@@ -1663,7 +1663,7 @@ sensu_role { 'test':
 
 #### Properties
 
-The following properties are available in the `sensu_role` type.
+The following properties are available in the `sensugo_role` type.
 
 ##### `ensure`
 
@@ -1685,7 +1685,7 @@ The rulesets that a role applies.
 
 #### Parameters
 
-The following parameters are available in the `sensu_role` type.
+The following parameters are available in the `sensugo_role` type.
 
 ##### `name`
 
@@ -1693,23 +1693,23 @@ namevar
 
 The name of the role.
 
-### sensu_role_binding
+### sensugo_role_binding
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_role` - Puppet will autorequire `sensu_role` resource defined in `role_ref` property.
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
-* `sensu_user` - Puppet will autorequire `sensu_user` resources based on users and groups defined for the `subjects` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_role` - Puppet will autorequire `sensugo_role` resource defined in `role_ref` property.
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
+* `sensugo_user` - Puppet will autorequire `sensugo_user` resources based on users and groups defined for the `subjects` property.
 
 #### Examples
 
 ##### Add a role binding
 
 ```puppet
-sensu_role_binding { 'test':
+sensugo_role_binding { 'test':
   ensure   => 'present',
   role_ref => 'test-role',
   subjects => [
@@ -1720,7 +1720,7 @@ sensu_role_binding { 'test':
 
 #### Properties
 
-The following properties are available in the `sensu_role_binding` type.
+The following properties are available in the `sensugo_role_binding` type.
 
 ##### `ensure`
 
@@ -1746,7 +1746,7 @@ The users or groups being assigned.
 
 #### Parameters
 
-The following parameters are available in the `sensu_role_binding` type.
+The following parameters are available in the `sensugo_role_binding` type.
 
 ##### `name`
 
@@ -1754,11 +1754,11 @@ namevar
 
 The name of the role binding.
 
-### sensu_silenced
+### sensugo_silenced
 
-The name of a `sensu_silenced` resource may not match the name returned by sensuctl.
+The name of a `sensugo_silenced` resource may not match the name returned by sensuctl.
 The name from sensuctl will take the form of `subscription:check`.
-If you wish to have a `sensu_silenced` resource name match sensuctl then define the name
+If you wish to have a `sensugo_silenced` resource name match sensuctl then define the name
 using the `subscription:check` format and do not define `subscription` or `check` properties.
 
 The `subscription` and `check` properties take precedence over value in the name if name takes the form `subscription:check`.
@@ -1766,25 +1766,25 @@ The `subscription` and `check` properties take precedence over value in the name
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
 
 #### Examples
 
-##### Create a silencing for all checks with subscription entity:sensu_agent
+##### Create a silencing for all checks with subscription entity:sensugo_agent
 
 ```puppet
-sensu_silenced { 'test':
+sensugo_silenced { 'test':
   ensure       => 'present',
-  subscription => 'entity:sensu_agent',
+  subscription => 'entity:sensugo_agent',
 }
 ```
 
-##### Define silencing using composite name where `subscription=entity:sensu_agent` and `check=*`.
+##### Define silencing using composite name where `subscription=entity:sensugo_agent` and `check=*`.
 
 ```puppet
-sensu_silenced { 'entity:sensu_agent:*':
+sensugo_silenced { 'entity:sensugo_agent:*':
   ensure => 'present',
 }
 ```
@@ -1792,7 +1792,7 @@ sensu_silenced { 'entity:sensu_agent:*':
 ##### Define silencing using composite name where `subscription=linux` and `check=check-http`.
 
 ```puppet
-sensu_silenced { 'linux:check-http':
+sensugo_silenced { 'linux:check-http':
   ensure => 'present',
 }
 ```
@@ -1800,7 +1800,7 @@ sensu_silenced { 'linux:check-http':
 ##### Define silencing where subscription is linux and check is check-http. The `subscription` property overrides the value from name.
 
 ```puppet
-sensu_silenced { 'test:check-http':
+sensugo_silenced { 'test:check-http':
   ensure       => 'present',
   subscription => 'linux',
 }
@@ -1809,7 +1809,7 @@ sensu_silenced { 'test:check-http':
 ##### Define silencing where subscription is linux and check is test. The `check` property overrides the value from name.
 
 ```puppet
-sensu_silenced { 'linux:check-http':
+sensugo_silenced { 'linux:check-http':
   ensure => 'present',
   check  => 'test',
 }
@@ -1817,7 +1817,7 @@ sensu_silenced { 'linux:check-http':
 
 #### Properties
 
-The following properties are available in the `sensu_silenced` type.
+The following properties are available in the `sensugo_silenced` type.
 
 ##### `ensure`
 
@@ -1873,7 +1873,7 @@ Arbitrary, non-identifying metadata to include with event data.
 
 #### Parameters
 
-The following parameters are available in the `sensu_silenced` type.
+The following parameters are available in the `sensugo_silenced` type.
 
 ##### `name`
 
@@ -1889,20 +1889,20 @@ The name of the check the entry should match
 
 The name of the subscription the entry should match
 
-### sensu_user
+### sensugo_user
 
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
 
 #### Examples
 
 ##### Create a user
 
 ```puppet
-sensu_user { 'test':
+sensugo_user { 'test':
   ensure   => 'present',
   password => 'supersecret',
   groups   => ['users'],
@@ -1912,7 +1912,7 @@ sensu_user { 'test':
 ##### Change a user's password
 
 ```puppet
-sensu_user { 'test'
+sensugo_user { 'test'
   ensure       => 'present',
   password     => 'newpassword',
   old_password => 'supersecret',
@@ -1922,7 +1922,7 @@ sensu_user { 'test'
 
 #### Properties
 
-The following properties are available in the `sensu_user` type.
+The following properties are available in the `sensugo_user` type.
 
 ##### `ensure`
 
@@ -1950,7 +1950,7 @@ Default value: false
 
 #### Parameters
 
-The following parameters are available in the `sensu_user` type.
+The following parameters are available in the `sensugo_user` type.
 
 ##### `name`
 

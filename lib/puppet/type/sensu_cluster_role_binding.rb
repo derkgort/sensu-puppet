@@ -4,11 +4,11 @@ require_relative '../../puppet_x/sensu/array_of_hashes_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_cluster_role_binding) do
+Puppet::Type.newtype(:sensugo_cluster_role_binding) do
   desc <<-DESC
 @summary Manages Sensu cluster role bindings
 @example Add a cluster role binding
-  sensu_cluster_role_binding { 'test':
+  sensugo_cluster_role_binding { 'test':
     ensure   => 'present',
     role_ref => 'test-role',
     subjects => [
@@ -19,13 +19,13 @@ Puppet::Type.newtype(:sensu_cluster_role_binding) do
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_cluster_role` - Puppet will autorequire `sensu_cluster_role` resource defined in `role_ref` property.
-* `sensu_user` - Puppet will autorequire `sensu_user` resources based on users and groups defined for the `subjects` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_cluster_role` - Puppet will autorequire `sensugo_cluster_role` resource defined in `role_ref` property.
+* `sensugo_user` - Puppet will autorequire `sensugo_user` resources based on users and groups defined for the `subjects` property.
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires(false)
 
   ensurable
@@ -38,7 +38,7 @@ DESC
     desc "References a cluster role."
   end
 
-  newproperty(:subjects, :array_matching => :all, :parent => PuppetX::Sensu::ArrayOfHashesProperty) do
+  newproperty(:subjects, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayOfHashesProperty) do
     desc "The users or groups being assigned."
     validate do |subject|
       if ! subject.is_a?(Hash)
@@ -64,11 +64,11 @@ DESC
     end
   end
 
-  autorequire(:sensu_cluster_role) do
+  autorequire(:sensugo_cluster_role) do
     [ self[:role_ref] ]
   end
 
-  autorequire(:sensu_user) do
+  autorequire(:sensugo_user) do
     users = []
     groups = []
     (self[:subjects] || []).each do |subject|
@@ -80,7 +80,7 @@ DESC
       end
     end
     catalog.resources.each do |resource|
-      if resource.class.to_s == 'Puppet::Type::Sensu_user'
+      if resource.class.to_s == 'Puppet::Type::sensugo_user'
         (resource[:groups] || []).each do |group|
           if groups.include?(group)
             users << resource.name

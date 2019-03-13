@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'sensu::repo', :type => :class do
+describe 'sensugo::repo', :type => :class do
   on_supported_os({facterversion: '3.8.0'}).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }

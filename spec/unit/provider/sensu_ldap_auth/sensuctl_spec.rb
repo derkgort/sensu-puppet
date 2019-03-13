@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Puppet::Type.type(:sensu_ldap_auth).provider(:sensuctl) do
+describe Puppet::Type.type(:sensugo_ldap_auth).provider(:sensuctl) do
   before(:each) do
     @provider = described_class
-    @type = Puppet::Type.type(:sensu_ldap_auth)
+    @type = Puppet::Type.type(:sensugo_ldap_auth)
     @resource = @type.new({
       :name => 'test',
       :servers => [{'host' => 'test', 'port' => 389}],

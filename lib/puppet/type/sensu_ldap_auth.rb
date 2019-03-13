@@ -4,11 +4,11 @@ require_relative '../../puppet_x/sensu/array_of_hashes_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_ldap_auth) do
+Puppet::Type.newtype(:sensugo_ldap_auth) do
   desc <<-DESC
 @summary Manages Sensu LDAP auth. Requires valid enterprise license.
 @example Add a LDAP auth
-  sensu_ldap_auth { 'openldap':
+  sensugo_ldap_auth { 'openldap':
     ensure              => 'present',
     servers             => [
       {
@@ -37,12 +37,12 @@ Puppet::Type.newtype(:sensu_ldap_auth) do
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
 * `Exec[sensu-add-license]`
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires(false)
 
   ensurable
@@ -51,12 +51,12 @@ DESC
     desc "The name of the LDAP auth."
     validate do |value|
       unless value =~ /^[\w\.\-]+$/
-        raise ArgumentError, "sensu_ldap_auth name invalid"
+        raise ArgumentError, "sensugo_ldap_auth name invalid"
       end
     end
   end
 
-  newproperty(:servers, :array_matching => :all, :parent => PuppetX::Sensu::ArrayOfHashesProperty) do
+  newproperty(:servers, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayOfHashesProperty) do
     desc <<-EOS
     LDAP servers
     Defaults:
@@ -101,7 +101,7 @@ DESC
     end
   end
 
-  newproperty(:server_binding, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:server_binding, :parent => PuppetX::Sensugo::HashProperty) do
     desc "LDAP server bindings"
     validate do |bindings|
       super(bindings)
@@ -135,7 +135,7 @@ DESC
     end
   end
 
-  newproperty(:server_group_search, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:server_group_search, :parent => PuppetX::Sensugo::HashProperty) do
     desc <<-EOS
     Search configuration for groups.
     Defaults:
@@ -179,7 +179,7 @@ DESC
     end
   end
 
-  newproperty(:server_user_search, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:server_user_search, :parent => PuppetX::Sensugo::HashProperty) do
     desc <<-EOS
     Search configuration for users.
     Defaults:

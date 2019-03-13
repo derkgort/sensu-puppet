@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_cluster_role', if: RSpec.configuration.sensu_full do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo_cluster_role', if: RSpec.configuration.sensugo_full do
+  node = hosts_as('sensugo_backend')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_cluster_role { 'test':
+      include ::sensugo::backend
+      sensugo_cluster_role { 'test':
         rules => [{'verbs' => ['get','list'], 'resources' => ['checks']}],
       }
       EOS
@@ -27,8 +27,8 @@ describe 'sensu_cluster_role', if: RSpec.configuration.sensu_full do
   context 'update cluster_role' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_cluster_role { 'test':
+      include ::sensugo::backend
+      sensugo_cluster_role { 'test':
         rules => [
           {'verbs' => ['get','list'], 'resources' => ['*'], resource_names => ['foo']},
           {'verbs' => ['get','list'], 'resources' => ['checks'], resource_names => ['bar']},
@@ -54,8 +54,8 @@ describe 'sensu_cluster_role', if: RSpec.configuration.sensu_full do
   context 'ensure => absent' do
     it 'should remove without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_cluster_role { 'test': ensure => 'absent' }
+      include ::sensugo::backend
+      sensugo_cluster_role { 'test': ensure => 'absent' }
       EOS
 
       # Run it twice and test for idempotency

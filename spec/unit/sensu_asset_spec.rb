@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_asset'
+require 'puppet/type/sensugo_asset'
 
-describe Puppet::Type.type(:sensu_asset) do
+describe Puppet::Type.type(:sensugo_asset) do
   let(:default_config) do
     {
       name: 'test',

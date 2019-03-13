@@ -3,18 +3,18 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_user) do
+Puppet::Type.newtype(:sensugo_user) do
   desc <<-DESC
 @summary Manages Sensu users
 @example Create a user
-  sensu_user { 'test':
+  sensugo_user { 'test':
     ensure   => 'present',
     password => 'supersecret',
     groups   => ['users'],
   }
 
 @example Change a user's password
-  sensu_user { 'test'
+  sensugo_user { 'test'
     ensure       => 'present',
     password     => 'newpassword',
     old_password => 'supersecret',
@@ -24,11 +24,11 @@ Puppet::Type.newtype(:sensu_user) do
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires(false)
 
   ensurable do
@@ -36,7 +36,7 @@ DESC
     defaultvalues
     validate do |value|
       if value.to_sym == :absent
-        raise ArgumentError, "sensu_user ensure does not support absent"
+        raise ArgumentError, "sensugo_user ensure does not support absent"
       end
     end
   end
@@ -45,7 +45,7 @@ DESC
     desc "The name of the user."
     validate do |value|
       unless value =~ /^[\w\.\-]+$/
-        raise ArgumentError, "sensu_user name invalid"
+        raise ArgumentError, "sensugo_user name invalid"
       end
     end
   end
@@ -77,7 +77,7 @@ DESC
     desc "The user's old password, needed in order to change a user's password"
   end
 
-  newproperty(:groups, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:groups, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "Groups to which the user belongs."
   end
 

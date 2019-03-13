@@ -94,12 +94,12 @@ By default this module will configure the backend to use Puppet's SSL certificat
 It's advisable to not rely on the default password. Changing the password requires providing the previous password via `old_password`.
 
 ```puppet
-  class { 'sensu::backend':
+  class { 'sensugo::backend':
     password     => 'supersecret',
     old_password => 'P@ssw0rd!',
   }
-  include sensu::agent
-  sensu_check { 'check-cpu':
+  include sensugo::agent
+  sensugo_check { 'check-cpu':
     ensure        => 'present',
     command       => 'check-cpu.sh -w 75 -c 90',
     interval      => 60,
@@ -113,7 +113,7 @@ The following example will manage resources necessary to configure a sensu-agent
 associated to `linux` and `apache-servers` subscriptions.
 
 ```puppet
-  class { 'sensu::agent':
+  class { 'sensugo::agent':
     backends    => ['sensu-backend.example.com:8081'],
     config_hash => {
       'subscriptions' => ['linux', 'apache-servers'],
@@ -127,11 +127,11 @@ If you wish to change the `agent` password you must provide the new and old pass
 It's advisable to set `show_diff` to `false` to avoid exposing the agent password.
 
 ```puppet
-class { 'sensu::backend':
+class { 'sensugo::backend':
   agent_password     => 'supersecret',
   agent_old_password => 'P@ssw0rd!',
 }
-class { 'sensu::agent':
+class { 'sensugo::agent':
   config_hash => {
     'password' => 'supersecret',
   },
@@ -150,7 +150,7 @@ If the certificates and keys are already installed then define the source parame
 class { 'sensu':
   ssl_ca_source => 'puppet:///modules/profile/sensu/ca.pem',
 }
-class { 'sensu::backend':
+class { 'sensugo::backend':
   url_host        => 'sensu-backend.example.com',
   ssl_cert_source => 'puppet:///modules/profile/sensu/cert.pem',
   ssl_key_source  => 'puppet:///modules/profile/sensu/key.pem',
@@ -160,7 +160,7 @@ class { 'sensu::backend':
 class { 'sensu':
   ssl_ca_source => 'puppet:///modules/profile/sensu/ca.pem',
 }
-class { 'sensu::agent':
+class { 'sensugo::agent':
   backends    => ['sensu-backend.example.com:8081'],
   config_hash => {
     'subscriptions' => ['linux', 'apache-servers'],
@@ -181,27 +181,27 @@ class { 'sensu':
 In order to activate enterprise support the license file needs to be added:
 
 ```puppet
-class { 'sensu::backend':
+class { 'sensugo::backend':
   license_source => 'puppet:///modules/profile/sensu/license.json',
 }
 ```
 
-The type `sensu_ldap_auth` requires a valid enterprise license.
+The type `sensugo_ldap_auth` requires a valid enterprise license.
 
 ### Installing Plugins
 
-Plugin management is handled by the `sensu::plugins` class.
+Plugin management is handled by the `sensugo::plugins` class.
 
 Example installing plugins on agent:
 
 ```puppet
-  class { 'sensu::agent':
+  class { 'sensugo::agent':
     backends    => ['sensu-backend.example.com:8081'],
     config_hash => {
       'subscriptions' => ['linux', 'apache-servers'],
     },
   }
-  class { 'sensu::plugins':
+  class { 'sensugo::plugins':
     plugins => ['disk-checks'],
   }
 ```
@@ -209,23 +209,23 @@ Example installing plugins on agent:
 The `plugins` parameter can also be a Hash that sets the version:
 
 ```puppet
-  class { 'sensu::agent':
+  class { 'sensugo::agent':
     backends    => ['sensu-backend.example.com:8081'],
     config_hash => {
       'subscriptions' => ['linux', 'apache-servers'],
     },
   }
-  class { 'sensu::plugins':
+  class { 'sensugo::plugins':
     plugins => {
       'disk-checks' => { 'version' => 'latest' },
     },
   }
 ```
 
-Set `dependencies` to an empty Array to disable the `sensu::plugins` dependency management.
+Set `dependencies` to an empty Array to disable the `sensugo::plugins` dependency management.
 
 ```puppet
-  class { 'sensu::plugins':
+  class { 'sensugo::plugins':
     dependencies => [],
   }
 ```
@@ -233,13 +233,13 @@ Set `dependencies` to an empty Array to disable the `sensu::plugins` dependency 
 You can uninstall plugins by passing `ensure` as `absent`.
 
 ```puppet
-  class { 'sensu::agent':
+  class { 'sensugo::agent':
     backends    => ['sensu-backend.example.com:8081'],
     config_hash => {
       'subscriptions' => ['linux', 'apache-servers'],
     },
   }
-  class { 'sensu::plugins':
+  class { 'sensugo::plugins':
     plugins => {
       'disk-checks' => { 'ensure' => 'absent' },
     },
@@ -248,16 +248,16 @@ You can uninstall plugins by passing `ensure` as `absent`.
 
 ### Installing Extensions
 
-Extension management is handled by the `sensu::plugins` class.
+Extension management is handled by the `sensugo::plugins` class.
 
 Example installing extension on backend:
 
 ```puppet
-  class { 'sensu::backend':
+  class { 'sensugo::backend':
     password     => 'supersecret',
     old_password => 'P@ssw0rd!',
   }
-  class { 'sensu::plugins':
+  class { 'sensugo::plugins':
     extensions => ['graphite'],
   }
 ```
@@ -265,11 +265,11 @@ Example installing extension on backend:
 The `extensions` parameter can also be a Hash that sets the version:
 
 ```puppet
-  class { 'sensu::backend':
+  class { 'sensugo::backend':
     password     => 'supersecret',
     old_password => 'P@ssw0rd!',
   }
-  class { 'sensu::plugins':
+  class { 'sensugo::plugins':
     extensions => {
       'graphite' => { 'version' => 'latest' },
     },
@@ -279,11 +279,11 @@ The `extensions` parameter can also be a Hash that sets the version:
 You can uninstall extensions by passing `ensure` as `absent`.
 
 ```puppet
-  class { 'sensu::backend':
+  class { 'sensugo::backend':
     password     => 'supersecret',
     old_password => 'P@ssw0rd!',
   }
-  class { 'sensu::plugins':
+  class { 'sensugo::plugins':
     extensions => {
       'graphite' => { 'ensure' => 'absent' },
     },
@@ -297,7 +297,7 @@ One possible approach to defining checks is having agents export their checks to
 The following example would be defined for agents:
 
 ```puppet
-  @@sensu_check { 'check-cpu':
+  @@sensugo_check { 'check-cpu':
     ensure        => 'present',
     command       => 'check-cpu.sh -w 75 -c 90',
     interval      => 60,
@@ -305,20 +305,20 @@ The following example would be defined for agents:
   }
 ```
 
-The backend system would collect all `sensu_check` resources.
+The backend system would collect all `sensugo_check` resources.
 
 ```puppet
-  Sensu_check <<||>>
+  sensugo_check <<||>>
 ```
 
 ### Resource purging
 
-All the types provided by this module support purging except `sensu_config`.
-At this time `sensu_asset` can not be purged, see [Limitations](#limitations).
+All the types provided by this module support purging except `sensugo_config`.
+At this time `sensugo_asset` can not be purged, see [Limitations](#limitations).
 This example will remove all unmanaged Sensu checks:
 
 ```puppet
-resources { 'sensu_check':
+resources { 'sensugo_check':
   purge => true,
 }
 ```
@@ -326,12 +326,12 @@ resources { 'sensu_check':
 ### Sensu backend cluster
 
 A `sensu-backend` cluster can be defined for fresh installs by defining the necessary `config_hash` values.
-The following examples are using Hiera and assume the `sensu::backend` class is included.
+The following examples are using Hiera and assume the `sensugo::backend` class is included.
 
 ```yaml
 # data/fqdn/sensu-backend1.example.com.yaml
 ---
-sensu::backend::config_hash:
+sensugo::backend::config_hash:
   etcd-advertise-client-urls: "http://%{facts.ipaddress}:2379"
   etcd-listen-client-urls: "http://%{facts.ipaddress}:2379"
   etcd-listen-peer-urls: 'http://0.0.0.0:2380'
@@ -344,7 +344,7 @@ sensu::backend::config_hash:
 ```yaml
 # data/fqdn/sensu-backend2.example.com.yaml
 ---
-sensu::backend::config_hash:
+sensugo::backend::config_hash:
   etcd-advertise-client-urls: "http://%{facts.ipaddress}:2379"
   etcd-listen-client-urls: "http://%{facts.ipaddress}:2379"
   etcd-listen-peer-urls: 'http://0.0.0.0:2380'
@@ -359,21 +359,21 @@ sensu::backend::config_hash:
 
 Adding new members to an existing cluster requires two steps.
 
-First, add the member to the catalog on one of the existing cluster backends with the `sensu_cluster_member` type.
+First, add the member to the catalog on one of the existing cluster backends with the `sensugo_cluster_member` type.
 
 ```puppet
-sensu_cluster_member { 'backend3':
+sensugo_cluster_member { 'backend3':
   peer_urls => ['http://192.168.0.3:2380'],
 }
 ```
 
 Second, configure and start `sensu-backend` to interact with the existing cluster.
-The output from Puppet when a new `sensu_cluster_member` is applied will print some of the values needed.
+The output from Puppet when a new `sensugo_cluster_member` is applied will print some of the values needed.
 
 ```yaml
 # data/fqdn/sensu-backend3.example.com.yaml
 ---
-sensu::backend::config_hash:
+sensugo::backend::config_hash:
   etcd-advertise-client-urls: "http://%{facts.ipaddress}:2379"
   etcd-listen-client-urls: "http://%{facts.ipaddress}:2379"
   etcd-listen-peer-urls: 'http://0.0.0.0:2380'
@@ -390,12 +390,12 @@ The first step will not fully add the node to the cluster until the second step 
 
 ### Facts
 
-#### `sensu_agent`
+#### `sensugo_agent`
 
-The `sensu_agent` fact returns the Sensu agent version information by the `sensu-agent` binary.
+The `sensugo_agent` fact returns the Sensu agent version information by the `sensu-agent` binary.
 
 ```shell
-facter -p sensu_agent
+facter -p sensugo_agent
 {
   version => "5.1.0",
   build => "b2ea9fcdb21e236e6e9a7de12225a6d90c786c57",
@@ -403,12 +403,12 @@ facter -p sensu_agent
 }
 ```
 
-#### `sensu_backend`
+#### `sensugo_backend`
 
-The `sensu_backend` fact returns the Sensu backend version information by the `sensu-backend` binary.
+The `sensugo_backend` fact returns the Sensu backend version information by the `sensu-backend` binary.
 
 ```shell
-facter -p sensu_backend
+facter -p sensugo_backend
 {
   version => "5.1.0",
   build => "b2ea9fcdb21e236e6e9a7de12225a6d90c786c57",
@@ -434,9 +434,9 @@ facter -p sensuctl
 The Sensu v2 support is designed so that all resources managed by `sensuctl` are defined on the `sensu-backend` host.
 This module does not support adding `sensuctl` resources on a host other than the `sensu-backend` host.
 
-The type `sensu_asset` does not at this time support `ensure => absent` due to a limitation with sensuctl, see [sensu-go#988](https://github.com/sensu/sensu-go/issues/988).
+The type `sensugo_asset` does not at this time support `ensure => absent` due to a limitation with sensuctl, see [sensu-go#988](https://github.com/sensu/sensu-go/issues/988).
 
-The type `sensu_user` does not at this time support `ensure => absent` due to a limitation with sensuctl, see [sensu-go#2540](https://github.com/sensu/sensu-go/issues/2540).
+The type `sensugo_user` does not at this time support `ensure => absent` due to a limitation with sensuctl, see [sensu-go#2540](https://github.com/sensu/sensu-go/issues/2540).
 
 ### Notes regarding support
 

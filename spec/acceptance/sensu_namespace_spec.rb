@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_namespace', if: RSpec.configuration.sensu_full do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo_namespace', if: RSpec.configuration.sensugo_full do
+  node = hosts_as('sensugo_backend')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_namespace { 'test': ensure => 'present' }
+      include ::sensugo::backend
+      sensugo_namespace { 'test': ensure => 'present' }
       EOS
 
       # Run it twice and test for idempotency
@@ -26,8 +26,8 @@ describe 'sensu_namespace', if: RSpec.configuration.sensu_full do
   context 'ensure => absent' do
     it 'should remove without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_namespace { 'test': ensure => 'absent' }
+      include ::sensugo::backend
+      sensugo_namespace { 'test': ensure => 'absent' }
       EOS
 
       # Run it twice and test for idempotency

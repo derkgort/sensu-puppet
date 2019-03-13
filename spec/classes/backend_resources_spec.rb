@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe 'sensu::backend::resources', :type => :class do
+describe 'sensugo::backend::resources', :type => :class do
   on_supported_os({facterversion: '3.8.0'}).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       context 'with default values for all parameters' do
         it { should compile }
-        it { should have_sensu_namespace_resource_count(1) }
-        it { should contain_sensu_namespace('default').with_ensure('present') }
-        it { should have_sensu_user_resource_count(2) }
+        it { should have_sensugo_namespace_resource_count(1) }
+        it { should contain_sensugo_namespace('default').with_ensure('present') }
+        it { should have_sensugo_user_resource_count(2) }
         it {
-          should contain_sensu_user('agent').with({
+          should contain_sensugo_user('agent').with({
             'ensure'       => 'present',
             'disabled'     => 'false',
             'password'     => 'P@ssw0rd!',
@@ -18,9 +18,9 @@ describe 'sensu::backend::resources', :type => :class do
             'groups'       => ['system:agents'],
           })
         }
-        it { should have_sensu_cluster_role_resource_count(6) }
+        it { should have_sensugo_cluster_role_resource_count(6) }
         it {
-          should contain_sensu_cluster_role('admin').with({
+          should contain_sensugo_cluster_role('admin').with({
             'ensure' => 'present',
             'rules'  => [
               {
@@ -50,7 +50,7 @@ describe 'sensu::backend::resources', :type => :class do
           })
         }
         it {
-          should contain_sensu_cluster_role('cluster-admin').with({
+          should contain_sensugo_cluster_role('cluster-admin').with({
             'ensure' => 'present',
             'rules'  => [
               {
@@ -62,7 +62,7 @@ describe 'sensu::backend::resources', :type => :class do
           })
         }
         it {
-          should contain_sensu_cluster_role('edit').with({
+          should contain_sensugo_cluster_role('edit').with({
             'ensure' => 'present',
             'rules'  => [
               {
@@ -90,7 +90,7 @@ describe 'sensu::backend::resources', :type => :class do
           })
         }
         it {
-          should contain_sensu_cluster_role('system:agent').with({
+          should contain_sensugo_cluster_role('system:agent').with({
             'ensure' => 'present',
             'rules'  => [
               {
@@ -102,7 +102,7 @@ describe 'sensu::backend::resources', :type => :class do
           })
         }
         it {
-          should contain_sensu_cluster_role('system:user').with({
+          should contain_sensugo_cluster_role('system:user').with({
             'ensure' => 'present',
             'rules'  => [
               {
@@ -119,7 +119,7 @@ describe 'sensu::backend::resources', :type => :class do
           })
         }
         it {
-          should contain_sensu_cluster_role('view').with({
+          should contain_sensugo_cluster_role('view').with({
             'ensure' => 'present',
             'rules'  => [
               {
@@ -142,9 +142,9 @@ describe 'sensu::backend::resources', :type => :class do
             ],
           })
         }
-        it { should have_sensu_cluster_role_binding_resource_count(3) }
+        it { should have_sensugo_cluster_role_binding_resource_count(3) }
         it {
-          should contain_sensu_cluster_role_binding('cluster-admin').with({
+          should contain_sensugo_cluster_role_binding('cluster-admin').with({
             'ensure'   => 'present',
             'role_ref' => 'cluster-admin',
             'subjects' => [
@@ -156,7 +156,7 @@ describe 'sensu::backend::resources', :type => :class do
           })
         }
         it {
-          should contain_sensu_cluster_role_binding('system:agent').with({
+          should contain_sensugo_cluster_role_binding('system:agent').with({
             'ensure'   => 'present',
             'role_ref' => 'system:agent',
             'subjects' => [
@@ -168,7 +168,7 @@ describe 'sensu::backend::resources', :type => :class do
           })
         }
         it {
-          should contain_sensu_cluster_role_binding('system:user').with({
+          should contain_sensugo_cluster_role_binding('system:user').with({
             'ensure'   => 'present',
             'role_ref' => 'system:user',
             'subjects' => [

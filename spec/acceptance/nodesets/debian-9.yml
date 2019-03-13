@@ -1,8 +1,8 @@
 HOSTS:
-  sensu_agent:
+  sensugo_agent:
     roles:
       - agent
-      - sensu_agent
+      - sensugo_agent
     platform: debian-9-amd64
     hypervisor: docker
     image: debian:9
@@ -16,10 +16,10 @@ HOSTS:
       - 'echo "LANG=en_US.UTF-8" > /etc/locale.conf'
       - 'locale-gen en_US.UTF-8'
     docker_container_name: 'sensu-agent-debian9'
-  sensu_backend:
+  sensugo_backend:
     roles:
       - agent
-      - sensu_backend
+      - sensugo_backend
       - default
     platform: debian-9-amd64
     hypervisor: docker

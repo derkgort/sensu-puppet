@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu_asset', if: RSpec.configuration.sensu_full do
-  node = hosts_as('sensu_backend')[0]
+describe 'sensugo_asset', if: RSpec.configuration.sensugo_full do
+  node = hosts_as('sensugo_backend')[0]
   context 'default' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_asset { 'test':
+      include ::sensugo::backend
+      sensugo_asset { 'test':
         url      => 'http://example.com/asset/example.tar',
         sha512   => '4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b',
         filters  => ['System.OS==linux'],
@@ -30,8 +30,8 @@ describe 'sensu_asset', if: RSpec.configuration.sensu_full do
   context 'with updates' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_asset { 'test':
+      include ::sensugo::backend
+      sensugo_asset { 'test':
         url      => 'http://example.com/asset/example.zip',
         sha512   => '4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b',
         filters  => ['System.OS==windows'],
@@ -55,8 +55,8 @@ describe 'sensu_asset', if: RSpec.configuration.sensu_full do
   context 'ensure => absent' do
     it 'should remove without errors' do
       pp = <<-EOS
-      include ::sensu::backend
-      sensu_asset { 'test': ensure => 'absent' }
+      include ::sensugo::backend
+      sensugo_asset { 'test': ensure => 'absent' }
       EOS
 
       # Run it twice and test for idempotency

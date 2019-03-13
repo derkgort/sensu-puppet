@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'sensu::repo::community', :type => :class do
+describe 'sensugo::repo::community', :type => :class do
   on_supported_os({facterversion: '3.8.0'}).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
@@ -14,8 +14,8 @@ describe 'sensu::repo::community', :type => :class do
       end
       if facts[:osfamily] == 'RedHat'
         it {
-          should contain_yumrepo('sensu_community').with({
-            'descr'           => 'sensu_community',
+          should contain_yumrepo('sensugo_community').with({
+            'descr'           => 'sensugo_community',
             'baseurl'         => baseurl,
             'repo_gpgcheck'   => 1,
             'gpgcheck'        => 0,
@@ -28,7 +28,7 @@ describe 'sensu::repo::community', :type => :class do
         }
       elsif facts[:osfamily] == 'Debian'
         it {
-          should contain_apt__source('sensu_community').with({
+          should contain_apt__source('sensugo_community').with({
             'ensure' => 'present',
             'location' => "https://packagecloud.io/sensu/community/#{facts[:os]['name'].downcase}/",
             'repos'    => 'main',

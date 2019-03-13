@@ -3,13 +3,13 @@
 # Class to manage the Sensu plugins.
 #
 # @example
-#   class { 'sensu::plugins':
+#   class { 'sensugo::plugins':
 #     plugins    => ['disk-checks'],
 #     extensions => ['graphite'],
 #   }
 #
 # @example
-#   class { 'sensu::plugins':
+#   class { 'sensugo::plugins':
 #     plugins    => {
 #       'disk-checks' => { 'version' => 'latest' },
 #     },
@@ -30,7 +30,7 @@
 # @param extensions
 #   Extensions to install
 #
-class sensu::plugins (
+class sensugo::plugins (
   String $package_ensure = 'installed',
   String $package_name = 'sensu-plugins-ruby',
   Array $dependencies = [],
@@ -38,11 +38,11 @@ class sensu::plugins (
   Variant[Array, Hash] $extensions = [],
 ) {
 
-  include ::sensu
+  include ::sensugo
 
-  if $::sensu::manage_repo {
-    include ::sensu::repo::community
-    $package_require = [Class['::sensu::repo::community']] + $::sensu::os_package_require
+  if $::sensugo::manage_repo {
+    include ::sensugo::repo::community
+    $package_require = [Class['::sensugo::repo::community']] + $::sensugo::os_package_require
   } else {
     $package_require = undef
   }
@@ -55,19 +55,19 @@ class sensu::plugins (
 
   ensure_packages($dependencies)
   $dependencies.each |$package| {
-    Package[$package] -> Sensu_plugin <| |> # lint:ignore:spaceship_operator_without_tag
+    Package[$package] -> sensugo_plugin <| |> # lint:ignore:spaceship_operator_without_tag
   }
 
   if $plugins =~ Array {
     $plugins.each |$plugin| {
-      sensu_plugin { $plugin:
+      sensugo_plugin { $plugin:
         ensure => 'present',
       }
     }
   } else {
     $plugins.each |$plugin, $plugin_data| {
       $data = { 'ensure' => 'present' } + $plugin_data
-      sensu_plugin { $plugin:
+      sensugo_plugin { $plugin:
         * => $data,
       }
     }
@@ -75,7 +75,7 @@ class sensu::plugins (
 
   if $extensions =~ Array {
     $extensions.each |$extension| {
-      sensu_plugin { $extension:
+      sensugo_plugin { $extension:
         ensure    => 'present',
         extension => true,
       }
@@ -83,7 +83,7 @@ class sensu::plugins (
   } else {
     $extensions.each |$extension, $extension_data| {
       $data = { 'ensure' => 'present', 'extension' => true } + $extension_data
-      sensu_plugin { $extension:
+      sensugo_plugin { $extension:
         * => $data,
       }
     }

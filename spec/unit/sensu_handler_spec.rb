@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_handler'
+require 'puppet/type/sensugo_handler'
 
-describe Puppet::Type.type(:sensu_handler) do
+describe Puppet::Type.type(:sensugo_handler) do
   let(:default_config) do
     {
       name: 'test',
@@ -202,8 +202,8 @@ describe Puppet::Type.type(:sensu_handler) do
     let(:res) { handler }
   end
 
-  it 'should autorequire sensu_filter' do
-    filter = Puppet::Type.type(:sensu_filter).new(:name => 'test', :action => 'allow', :expressions => ['event.Check.Occurrences == 1'])
+  it 'should autorequire sensugo_filter' do
+    filter = Puppet::Type.type(:sensugo_filter).new(:name => 'test', :action => 'allow', :expressions => ['event.Check.Occurrences == 1'])
     catalog = Puppet::Resource::Catalog.new
     config[:filters] = ['test']
     catalog.add_resource handler
@@ -213,8 +213,8 @@ describe Puppet::Type.type(:sensu_handler) do
     expect(rel.target.ref).to eq(handler.ref)
   end
 
-  it 'should autorequire sensu_mutator' do
-    mutator = Puppet::Type.type(:sensu_mutator).new(:name => 'test', :command => 'test')
+  it 'should autorequire sensugo_mutator' do
+    mutator = Puppet::Type.type(:sensugo_mutator).new(:name => 'test', :command => 'test')
     catalog = Puppet::Resource::Catalog.new
     config[:mutator] = 'test'
     catalog.add_resource handler
@@ -224,8 +224,8 @@ describe Puppet::Type.type(:sensu_handler) do
     expect(rel.target.ref).to eq(handler.ref)
   end
 
-  it 'should autorequire sensu_handler' do
-    h = Puppet::Type.type(:sensu_handler).new(:name => 'test2', :type => 'pipe', :command => 'test')
+  it 'should autorequire sensugo_handler' do
+    h = Puppet::Type.type(:sensugo_handler).new(:name => 'test2', :type => 'pipe', :command => 'test')
     catalog = Puppet::Resource::Catalog.new
     config[:handlers] = ['test2']
     catalog.add_resource handler
@@ -235,8 +235,8 @@ describe Puppet::Type.type(:sensu_handler) do
     expect(rel.target.ref).to eq(handler.ref)
   end
 
-  it 'should autorequire sensu_asset' do
-    asset = Puppet::Type.type(:sensu_asset).new(:name => 'test', :url => 'http://example.com/asset/example.tar', :sha512 => '4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b')
+  it 'should autorequire sensugo_asset' do
+    asset = Puppet::Type.type(:sensugo_asset).new(:name => 'test', :url => 'http://example.com/asset/example.tar', :sha512 => '4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b')
     catalog = Puppet::Resource::Catalog.new
     config[:runtime_assets] = ['test']
     catalog.add_resource handler

@@ -52,4 +52,7 @@ doc/**
 /.ruby-version
 
 # secrets
-tests/sensu_license.json
+tests/sensugo_license.json
+
+#Jetbreans / Rubymine
+/.idea

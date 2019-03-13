@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-describe 'sensu::backend class', if: !(RSpec.configuration.sensu_cluster || RSpec.configuration.sensu_full) do
-  backend = hosts_as('sensu_backend')[0]
-  agent = hosts_as('sensu_agent')[0]
+describe 'sensugo::backend class', if: !(RSpec.configuration.sensugo_cluster || RSpec.configuration.sensugo_full) do
+  backend = hosts_as('sensugo_backend')[0]
+  agent = hosts_as('sensugo_agent')[0]
   context 'backend facts' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::backend
+      include ::sensugo::backend
       EOS
 
       # Run it twice and test for idempotency
@@ -18,7 +18,7 @@ describe 'sensu::backend class', if: !(RSpec.configuration.sensu_cluster || RSpe
     end
 
     it "should have backend facts" do
-      version = on(backend, 'facter -p sensu_backend.version').stdout
+      version = on(backend, 'facter -p sensugo_backend.version').stdout
       expect(version).to match(/^[0-9\.]+$/)
     end
 
@@ -31,7 +31,7 @@ describe 'sensu::backend class', if: !(RSpec.configuration.sensu_cluster || RSpe
   context 'agent facts' do
     it 'should work without errors' do
       pp = <<-EOS
-      include ::sensu::agent
+      include ::sensugo::agent
       EOS
 
       # Run it twice and test for idempotency
@@ -43,7 +43,7 @@ describe 'sensu::backend class', if: !(RSpec.configuration.sensu_cluster || RSpe
     end
 
     it "should have agent facts" do
-      version = on(agent, 'facter -p sensu_agent.version').stdout
+      version = on(agent, 'facter -p sensugo_agent.version').stdout
       expect(version).to match(/^[0-9\.]+$/)
     end
   end

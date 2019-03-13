@@ -3,11 +3,11 @@ require_relative '../../puppet_x/sensu/array_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_hook) do
+Puppet::Type.newtype(:sensugo_hook) do
   desc <<-DESC
 @summary Manages Sensu hooks
 @example Create a hook
-  sensu_hook { 'test':
+  sensugo_hook { 'test':
     ensure  => 'present',
     command => 'ps aux',
   }
@@ -15,12 +15,12 @@ Puppet::Type.newtype(:sensu_hook) do
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires()
 
   ensurable
@@ -29,7 +29,7 @@ DESC
     desc "The name of the hook."
     validate do |value|
       unless value =~ /^[\w\.\-]+$/
-        raise ArgumentError, "sensu_hook name invalid"
+        raise ArgumentError, "sensugo_hook name invalid"
       end
     end
   end
@@ -38,7 +38,7 @@ DESC
     desc "The hook command to be executed."
   end
 
-  newproperty(:timeout, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:timeout, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc "The hook execution duration timeout in seconds (hard stop)"
     defaultto 60
   end
@@ -54,11 +54,11 @@ DESC
     defaultto 'default'
   end
 
-  newproperty(:labels, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:labels, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Custom attributes to include with event data, which can be queried like regular attributes."
   end
 
-  newproperty(:annotations, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:annotations, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Arbitrary, non-identifying metadata to include with event data."
   end
 

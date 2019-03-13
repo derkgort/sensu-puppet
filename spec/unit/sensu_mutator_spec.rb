@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_mutator'
+require 'puppet/type/sensugo_mutator'
 
-describe Puppet::Type.type(:sensu_mutator) do
+describe Puppet::Type.type(:sensugo_mutator) do
   let(:default_config) do
     {
       name: 'test',
@@ -171,8 +171,8 @@ describe Puppet::Type.type(:sensu_mutator) do
     let(:res) { mutator }
   end
 
-  it 'should autorequire sensu_asset' do
-    asset = Puppet::Type.type(:sensu_asset).new(:name => 'test', :url => 'http://example.com/asset/example.tar', :sha512 => '4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b')
+  it 'should autorequire sensugo_asset' do
+    asset = Puppet::Type.type(:sensugo_asset).new(:name => 'test', :url => 'http://example.com/asset/example.tar', :sha512 => '4f926bf4328fbad2b9cac873d117f771914f4b837c9c85584c38ccf55a3ef3c2e8d154812246e5dda4a87450576b2c58ad9ab40c9e2edc31b288d066b195b21b')
     catalog = Puppet::Resource::Catalog.new
     config[:runtime_assets] = ['test']
     catalog.add_resource mutator

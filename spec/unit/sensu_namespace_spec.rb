@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'puppet/type/sensu_namespace'
+require 'puppet/type/sensugo_namespace'
 
-describe Puppet::Type.type(:sensu_namespace) do
+describe Puppet::Type.type(:sensugo_namespace) do
   let(:default_config) do
     {
       name: 'test',

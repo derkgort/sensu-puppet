@@ -4,11 +4,11 @@ require_relative '../../puppet_x/sensu/array_of_hashes_property'
 require_relative '../../puppet_x/sensu/hash_property'
 require_relative '../../puppet_x/sensu/integer_property'
 
-Puppet::Type.newtype(:sensu_check) do
+Puppet::Type.newtype(:sensugo_check) do
   desc <<-DESC
 @summary Manages Sensu checks
 @example Create a check
-  sensu_check { 'test':
+  sensugo_check { 'test':
     ensure        => 'present',
     command       => 'check-http.rb',
     subscriptions => ['demo'],
@@ -17,7 +17,7 @@ Puppet::Type.newtype(:sensu_check) do
   }
 
 @example Create a check that has a hook
-  sensu_check { 'test':
+  sensugo_check { 'test':
     ensure        => 'present',
     command       => 'check-cpu.sh -w 75 -c 90',
     subscriptions => ['linux'],
@@ -31,15 +31,15 @@ Puppet::Type.newtype(:sensu_check) do
 **Autorequires**:
 * `Package[sensu-go-cli]`
 * `Service[sensu-backend]`
-* `Sensu_configure[puppet]`
-* `Sensu_api_validator[sensu]`
-* `sensu_namespace` - Puppet will autorequire `sensu_namespace` resource defined in `namespace` property.
-* `sensu_handler` - Puppet will autorequie `sensu_handler` resources defined in `handlers` property.
-* `sensu_asset` - Puppet will autorequire `sensu_asset` resources defined in `runtime_assets` property.
-* `sensu_hook` - Puppet will autorequire `sensu_hook` resources defined in `check_hooks` property.
+* `sensugo_configure[puppet]`
+* `sensugo_api_validator[sensu]`
+* `sensugo_namespace` - Puppet will autorequire `sensugo_namespace` resource defined in `namespace` property.
+* `sensugo_handler` - Puppet will autorequie `sensugo_handler` resources defined in `handlers` property.
+* `sensugo_asset` - Puppet will autorequire `sensugo_asset` resources defined in `runtime_assets` property.
+* `sensugo_hook` - Puppet will autorequire `sensugo_hook` resources defined in `check_hooks` property.
 DESC
 
-  extend PuppetX::Sensu::Type
+  extend PuppetX::Sensugo::Type
   add_autorequires()
 
   ensurable
@@ -48,7 +48,7 @@ DESC
     desc "The name of the check."
     validate do |value|
       unless value =~ /^[\w\.\-]+$/
-        raise ArgumentError, "sensu_check name invalid"
+        raise ArgumentError, "sensugo_check name invalid"
       end
     end
   end
@@ -57,15 +57,15 @@ DESC
     desc "The check command to be executed."
   end
 
-  newproperty(:subscriptions, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:subscriptions, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "An array of Sensu entity subscriptions that check requests will be sent to."
   end
 
-  newproperty(:handlers, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:handlers, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "An array of Sensu event handlers (names) to use for events created by the check."
   end
 
-  newproperty(:interval, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:interval, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc "The frequency in seconds the check is executed."
     newvalues(/^[0-9]+$/, :absent)
   end
@@ -81,12 +81,12 @@ DESC
     defaultto(:true)
   end
 
-  newproperty(:timeout, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:timeout, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc "The check execution duration timeout in seconds (hard stop)."
     newvalues(/^[0-9]+$/, :absent)
   end
 
-  newproperty(:ttl, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:ttl, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc "The time to live (TTL) in seconds until check results are considered stale."
     newvalues(/^[0-9]+$/, :absent)
   end
@@ -97,22 +97,22 @@ DESC
     defaultto(:false)
   end
 
-  newproperty(:low_flap_threshold, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:low_flap_threshold, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc "The flap detection low threshold (% state change) for the check"
     newvalues(/^[0-9]+$/, :absent)
   end
 
-  newproperty(:high_flap_threshold, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:high_flap_threshold, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc "The flap detection high threshold (% state change) for the check"
     newvalues(/^[0-9]+$/, :absent)
   end
 
-  newproperty(:runtime_assets, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:runtime_assets, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "An array of Sensu assets (names), required at runtime for the execution of the command"
     newvalues(/.*/, :absent)
   end
 
-  newproperty(:check_hooks, :array_matching => :all, :parent => PuppetX::Sensu::ArrayOfHashesProperty) do
+  newproperty(:check_hooks, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayOfHashesProperty) do
     desc "An array of check response types with respective arrays of Sensu hook names."
     validate do |value|
       if ! value.is_a?(Hash)
@@ -158,7 +158,7 @@ DESC
     newvalues(:true, :false)
   end
 
-  newproperty(:proxy_requests_entity_attributes, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:proxy_requests_entity_attributes, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "Sensu entity attributes to match entities in the registry, using Sensu Query Expressions"
   end
 
@@ -167,7 +167,7 @@ DESC
     newvalues(:true, :false)
   end
 
-  newproperty(:proxy_requests_splay_coverage, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:proxy_requests_splay_coverage, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc "The splay coverage percentage use for proxy check request splay calculation."
   end
 
@@ -176,7 +176,7 @@ DESC
     newvalues(:true, :false)
   end
 
-  newproperty(:env_vars, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:env_vars, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "An array of environment variables to use with command execution."
     newvalues(/.*/, :absent)
   end
@@ -186,12 +186,12 @@ DESC
     newvalues(:nagios_perfdata, :graphite_plaintext, :influxdb_line, :opentsdb_line, :absent)
   end
 
-  newproperty(:output_metric_handlers, :array_matching => :all, :parent => PuppetX::Sensu::ArrayProperty) do
+  newproperty(:output_metric_handlers, :array_matching => :all, :parent => PuppetX::Sensugo::ArrayProperty) do
     desc "An array of Sensu handlers to use for events created by the check."
     newvalues(/.*/, :absent)
   end
 
-  newproperty(:max_output_size, :parent => PuppetX::Sensu::IntegerProperty) do
+  newproperty(:max_output_size, :parent => PuppetX::Sensugo::IntegerProperty) do
     desc 'Maximum size, in bytes, of stored check outputs.'
   end
 
@@ -205,23 +205,23 @@ DESC
     defaultto 'default'
   end
 
-  newproperty(:labels, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:labels, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Custom attributes to include with event data, which can be queried like regular attributes."
   end
 
-  newproperty(:annotations, :parent => PuppetX::Sensu::HashProperty) do
+  newproperty(:annotations, :parent => PuppetX::Sensugo::HashProperty) do
     desc "Arbitrary, non-identifying metadata to include with event data."
   end
 
-  autorequire(:sensu_handler) do
+  autorequire(:sensugo_handler) do
     self[:handlers]
   end
 
-  autorequire(:sensu_asset) do
+  autorequire(:sensugo_asset) do
     self[:runtime_assets]
   end
 
-  autorequire(:sensu_hook) do
+  autorequire(:sensugo_hook) do
     check_hooks = []
     (self[:check_hooks] || []).each do |check_hook|
       check_hook.each_pair do |severity, hooks|
